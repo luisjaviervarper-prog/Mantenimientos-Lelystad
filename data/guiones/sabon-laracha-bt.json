@@ -1,0 +1,671 @@
+{
+ "id": "sabon-laracha-bt",
+ "tipo": "BT",
+ "titulo": "Mantenimiento BT por edificio y cuadro",
+ "intro": "Se recorre edificio → zona → cuadro, siguiendo el inventario de cuadros por zona de Sabón y Laracha. La Fase 2 se repite en cada cuadro; alumbrado, emergencias y tierras se hacen una vez por edificio.",
+ "fases": [
+  {
+   "n": 0,
+   "titulo": "Preparación",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F0.1",
+     "texto": "Abrir OT y seleccionar edificio. La app carga la lista de cuadros con su código, ubicación y unifilar.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.2",
+     "texto": "Acordar con el cliente qué cuadros admiten corte y en qué horario (oficinas, CPD, producción).",
+     "campos": [
+      {
+       "t": "TXT"
+      }
+     ]
+    },
+    {
+     "id": "F0.3",
+     "texto": "Equipos: multifunción (Metrel MI3100SE), pinza amperimétrica, cámara termográfica, comprobador de emergencias.",
+     "campos": [
+      {
+       "t": "SEL",
+       "fuente": "equipos",
+       "multi": true
+      }
+     ]
+    },
+    {
+     "id": "F0.4",
+     "texto": "EPIs BT: guantes aislantes clase 00/0, pantalla facial, herramienta aislada.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 1,
+   "titulo": "Llegada a la zona",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F1.1",
+     "texto": "Foto general de la zona o sala de cuadros antes de empezar.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.2",
+     "texto": "Accesibilidad: cuadros libres de obstáculos, puertas cerradas con llave, espacio de trabajo libre.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "titulo": "Cuadro (repetir por cada cuadro)",
+   "repetir": "cuadro",
+   "pasos": [
+    {
+     "id": "F2.1",
+     "texto": "Seleccionar cuadro de la lista o escanear su QR.",
+     "campos": [
+      {
+       "t": "ID",
+       "label": "Código del cuadro",
+       "qr": true
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.2",
+     "texto": "Foto exterior del cuadro: rotulación con código, etiqueta de riesgo eléctrico, estado de la envolvente.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.3",
+     "texto": "Foto del unifilar del cuadro (en la puerta o portaplanos); si falta o no coincide, marcar I.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.4",
+     "texto": "Abrir y foto del interior antes de intervenir.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.5",
+     "texto": "Termografía con carga.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "termica": true
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura máxima",
+         "unidad": "°C",
+         "tipo": "num"
+        },
+        {
+         "label": "Temperatura de referencia",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.6",
+     "texto": "Corrientes por fase con pinza en la cabecera: L1, L2, L3, N.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "L1",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "L2",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "L3",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "N",
+         "unidad": "A",
+         "tipo": "num"
+        }
+       ],
+       "nota": "la app calcula el desequilibrio"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.7",
+     "texto": "Diferenciales: pulsador de prueba y ensayo con el multifunción (tiempo de disparo a IΔn y corriente de disparo).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tiempo de disparo a IΔn",
+         "unidad": "ms",
+         "tipo": "num",
+         "crit": "dif_ms"
+        },
+        {
+         "label": "Corriente de disparo",
+         "unidad": "mA",
+         "tipo": "num",
+         "crit": "dif_ma"
+        }
+       ],
+       "nota": "por diferencial; si no se puede disparar, N",
+       "multi": true
+      },
+      {
+       "t": "TXT"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.8",
+     "texto": "Decisión: ¿se interviene con corte?",
+     "campos": [
+      {
+       "t": "SEL",
+       "rol": "corte",
+       "opciones": [
+        "Con corte",
+        "Sin corte"
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.9",
+     "texto": "Aplicar 5 reglas de oro en el interruptor de cabecera aguas arriba.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del bloqueo y de la verificación de ausencia de tensión"
+      }
+     ],
+     "seccion": "Con corte (si se ha decidido)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.10",
+     "texto": "Limpieza interior (aspirado, sin aire a presión sobre aparamenta).",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con corte (si se ha decidido)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.11",
+     "texto": "Reapriete de bornas de aparamenta, repartidores y embarrados.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con corte (si se ha decidido)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.12",
+     "texto": "Aislamiento de las líneas de salida a 500 V c.c.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Aislamiento",
+         "unidad": "MΩ",
+         "tipo": "num",
+         "crit": "aisl_bt"
+        }
+       ],
+       "nota": "por línea",
+       "multi": true
+      }
+     ],
+     "seccion": "Con corte (si se ha decidido)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.13",
+     "texto": "Continuidad de los conductores de protección.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Continuidad",
+         "unidad": "Ω",
+         "tipo": "num",
+         "crit": "cont"
+        }
+       ]
+      }
+     ],
+     "seccion": "Con corte (si se ha decidido)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.14",
+     "texto": "Ajustes y calibres de las protecciones coinciden con el unifilar.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por salida"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ],
+     "seccion": "Con o sin corte"
+    },
+    {
+     "id": "F2.15",
+     "texto": "Rotulación de todas las salidas.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con o sin corte"
+    },
+    {
+     "id": "F2.16",
+     "texto": "Puesta a tierra de la envolvente y de la puerta (trenza).",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con o sin corte"
+    },
+    {
+     "id": "F2.17",
+     "texto": "Tapas, cubrebornas y protección contra contactos directos completos.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con o sin corte"
+    },
+    {
+     "id": "F2.18",
+     "texto": "Si hubo corte: reponer, comprobar tensión y que las cargas funcionan.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión",
+         "unidad": "V",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "SINO"
+      }
+     ],
+     "seccion": "Con o sin corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.19",
+     "texto": "Foto del interior después y del cuadro cerrado.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 2
+      }
+     ],
+     "seccion": "Con o sin corte"
+    },
+    {
+     "id": "F2.20",
+     "texto": "Defectos del cuadro: foto, clasificación y descripción.",
+     "campos": [
+      {
+       "t": "DEFECTOS"
+      }
+     ],
+     "seccion": "Con o sin corte"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "titulo": "Tomas de corriente (por muestreo)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F3.1",
+     "texto": "En cada zona, medir al menos el 10 % de las tomas: tensión, continuidad de tierra y polaridad.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión",
+         "unidad": "V",
+         "tipo": "num"
+        },
+        {
+         "label": "Continuidad de tierra",
+         "unidad": "Ω",
+         "tipo": "num",
+         "crit": "cont_toma"
+        },
+        {
+         "label": "Polaridad",
+         "unidad": "",
+         "tipo": "okko"
+        }
+       ],
+       "nota": "por toma",
+       "multi": true
+      }
+     ]
+    },
+    {
+     "id": "F3.2",
+     "texto": "Tomas rotas o sin tapa.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "titulo": "Alumbrado general",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F4.1",
+     "texto": "Recorrido de la zona: luminarias fundidas, dañadas o con parpadeo.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Luminarias KO",
+         "unidad": "nº",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    },
+    {
+     "id": "F4.2",
+     "texto": "Mecanismos de encendido y detectores de presencia.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "titulo": "Alumbrado de emergencia",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F5.1",
+     "texto": "Provocar el fallo de red de los circuitos de emergencia (o pulsador de test de la centralita).",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "de la centralita si existe"
+      }
+     ]
+    },
+    {
+     "id": "F5.2",
+     "texto": "Comprobar el encendido de cada luminaria.",
+     "campos": [
+      {
+       "t": "OKKO",
+       "nota": "por luminaria"
+      },
+      {
+       "t": "FOTO*",
+       "nota": "de las KO"
+      }
+     ]
+    },
+    {
+     "id": "F5.3",
+     "texto": "Autonomía: mínimo 1 hora (prueba anual).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Autonomía",
+         "unidad": "min",
+         "tipo": "num",
+         "crit": "autonomia"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F5.4",
+     "texto": "Señalización de evacuación legible y bien orientada.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.5",
+     "texto": "Reponer red y comprobar que todas vuelven a carga (testigo verde).",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "titulo": "Tierras del edificio",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F6.1",
+     "texto": "Resistencia de tierra en el punto de puesta a tierra o borne principal.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Resistencia",
+         "unidad": "Ω",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F6.2",
+     "texto": "Estado de la arqueta y conexiones.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "titulo": "Cierre del edificio",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F7.1",
+     "texto": "Foto final de cada zona.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F7.2",
+     "texto": "Material usado: lista y foto.",
+     "campos": [
+      {
+       "t": "TXT"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F7.3",
+     "texto": "Resumen: nº de cuadros revisados, nº de defectos por gravedad, cuadros pendientes. La app lo calcula; el técnico confirma.",
+     "campos": [
+      {
+       "t": "RESUMEN"
+      }
+     ]
+    },
+    {
+     "id": "F7.4",
+     "texto": "Resultado global: FAVORABLE / CONDICIONADO / DESFAVORABLE.",
+     "campos": [
+      {
+       "t": "SEL",
+       "rol": "resultado",
+       "opciones": [
+        "FAVORABLE",
+        "CONDICIONADO",
+        "DESFAVORABLE"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F7.5",
+     "texto": "Firma del técnico y del responsable del cliente.",
+     "campos": [
+      {
+       "t": "FIRMA",
+       "quien": [
+        "Técnico",
+        "Responsable del cliente (si está presente)"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reglas": [
+  "Ningún trabajo empieza sin orden de trabajo (OT) abierta en la app y sin el centro o cuadro identificado (lista o código QR).",
+  "Foto de la sala o zona antes de entrar y al terminar, siempre desde el mismo punto.",
+  "Foto del esquema unifilar del centro o cuadro antes de maniobrar o tocar nada.",
+  "Se decide y registra al principio si el trabajo es con corte o sin corte de tensión. Con corte se aplican las 5 reglas de oro con foto de cada una.",
+  "Cada medida se guarda con el equipo usado; la app avisa si el certificado de calibración del equipo está caducado.",
+  "Todo punto marcado I obliga a: foto del defecto, clasificación (Muy grave / Grave / Leve), descripción y propuesta de solución.",
+  "Lo corregido en el momento se marca A, con foto del antes y del después.",
+  "Al cerrar: material usado (lista + foto), resultado global y firma del técnico. La app genera el informe con el formato de los informes Osmos."
+ ]
+}

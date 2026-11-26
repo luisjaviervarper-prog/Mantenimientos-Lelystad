@@ -1,0 +1,131 @@
+{
+ "instalaciones": [
+  {
+   "id": "sabon",
+   "nombre": "Sabón",
+   "pais": "ES",
+   "perfil": "sabon",
+   "guiones": [
+    "sabon-laracha-mt",
+    "sabon-laracha-bt"
+   ],
+   "centrosMT": [
+    "CT A",
+    "CT B",
+    "CT C",
+    "CT D",
+    "CT E",
+    "CT F",
+    "CT G",
+    "CT H",
+    "CT I",
+    "CT J",
+    "CT K",
+    "CT 1",
+    "CT 2",
+    "CT 3",
+    "CT FV Zara.com",
+    "Centro de Entrega",
+    "Aerogenerador"
+   ],
+   "zonasBT": []
+  },
+  {
+   "id": "laracha",
+   "nombre": "Laracha",
+   "pais": "ES",
+   "perfil": "sabon",
+   "guiones": [
+    "sabon-laracha-mt",
+    "sabon-laracha-bt"
+   ],
+   "centrosMT": [
+    "CT A",
+    "CT B",
+    "CT Nave",
+    "CT FV"
+   ],
+   "zonasBT": []
+  },
+  {
+   "id": "lelystad",
+   "nombre": "Lelystad",
+   "pais": "NL",
+   "perfil": "lelystad",
+   "cliente": "GXO",
+   "guiones": [
+    "lelystad-mt",
+    "lelystad-bt"
+   ],
+   "centrosMT": [
+    "Centro de Entrega",
+    "Central de Emergencia",
+    "TS 01",
+    "TS 03",
+    "TS 04",
+    "TS 06",
+    "TS 07",
+    "TS 09",
+    "TS 10",
+    "TS 11",
+    "TS 12",
+    "TS 13",
+    "TS 14",
+    "TS IF1 Plancha",
+    "TS IF2 Plancha",
+    "TS IF2 Plancha FV"
+   ],
+   "zonasBT": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "Sector B",
+    "Nave Plancha I",
+    "Nave Plancha II",
+    "Silos",
+    "Oficinas y comedor",
+    "Central térmica",
+    "General/distribución",
+    "Otros"
+   ],
+   "alcance": [
+    [
+     "Bloque",
+     "Elementos",
+     "Cantidad"
+    ],
+    [
+     "MT",
+     "Centro de Entrega, Central de Emergencia, TS 01, 03, 04, 06, 07, 09, 10, 11, 12, 13, 14, TS IF1 Plancha, TS IF2 Plancha, TS IF2 Plancha FV",
+     "16 centros"
+    ],
+    [
+     "MT",
+     "Transformadores",
+     "31"
+    ],
+    [
+     "MT",
+     "Celdas",
+     "104"
+    ],
+    [
+     "BT",
+     "CGBT Okken (Schneider) tras trafo: TS-1, 3, 4, 7, 9, 10, 11, 12, 14",
+     "9 CGBT, 115 columnas"
+    ],
+    [
+     "BT",
+     "Cuadros por zona (A1, A2, B1, B2, Sector B, Nave Plancha I y II, Silos, Oficinas y comedor, Central térmica, General/distribución, Otros)",
+     "414 cuadros (607 armarios reales)"
+    ],
+    [
+     "BT",
+     "Luminarias de emergencia",
+     "4.339"
+    ]
+   ]
+  }
+ ]
+}

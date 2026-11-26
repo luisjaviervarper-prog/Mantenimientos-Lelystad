@@ -1,0 +1,681 @@
+{
+ "id": "lelystad-bt",
+ "tipo": "BT",
+ "titulo": "Mantenimiento BT por zona y cuadro",
+ "intro": "Se recorre zona → cuadro con el recuento de cuadros de Lelystad. La limpieza se hace en los 607 armarios. El megado se hace en los 159 cuadros marcados para ello (2 operarios). Se añaden comprobaciones para los defectos que más repite GnO, para que no vuelvan a salir en la próxima inspección.",
+ "fases": [
+  {
+   "n": 0,
+   "titulo": "Preparación",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F0.1",
+     "texto": "Abrir OT y seleccionar zona (A1, A2, B1, B2, Sector B, Nave Plancha I/II, Silos, Oficinas y comedor, Central térmica, General/distribución, Otros). La app carga los cuadros, su código, si llevan megado y las constataciones GnO abiertas de cada uno.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.2",
+     "texto": "Acordar con GXO los cuadros que admiten corte y el horario.",
+     "campos": [
+      {
+       "t": "TXT"
+      }
+     ]
+    },
+    {
+     "id": "F0.3",
+     "texto": "Equipos (multifunción, pinza, cámara termográfica) y designación VP de BT vigente.",
+     "campos": [
+      {
+       "t": "SEL",
+       "fuente": "equipos",
+       "multi": true
+      },
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.4",
+     "texto": "LMRA de la zona.",
+     "campos": [
+      {
+       "t": "LMRA"
+      },
+      {
+       "t": "FIRMA",
+       "quien": [
+        "Equipo de trabajo"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 1,
+   "titulo": "Zona",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F1.1",
+     "texto": "Foto general de la zona antes de empezar.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.2",
+     "texto": "Accesibilidad y espacio libre delante de los cuadros.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "titulo": "Cuadro (repetir por cuadro)",
+   "repetir": "cuadro",
+   "pasos": [
+    {
+     "id": "F2.1",
+     "texto": "Seleccionar o escanear el cuadro.",
+     "campos": [
+      {
+       "t": "ID",
+       "label": "Código del cuadro",
+       "qr": true
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.2",
+     "texto": "Foto exterior. Identificación del cuadro visible y correcta (es el defecto más repetido por GnO, 90 casos).",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.3",
+     "texto": "Foto del unifilar; comprobar que está actualizado y no corregido a mano.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.4",
+     "texto": "Foto del interior antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.5",
+     "texto": "Termografía con carga.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "termica": true
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura máxima",
+         "unidad": "°C",
+         "tipo": "num"
+        },
+        {
+         "label": "Temperatura de referencia",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.6",
+     "texto": "Corrientes L1, L2, L3, N.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "L1",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "L2",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "L3",
+         "unidad": "A",
+         "tipo": "num"
+        },
+        {
+         "label": "N",
+         "unidad": "A",
+         "tipo": "num"
+        }
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.7",
+     "texto": "Tensión entre neutro y conductor de protección.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión N–PE",
+         "unidad": "V",
+         "tipo": "num",
+         "crit": "nfpe"
+        }
+       ],
+       "nota": "alerta si > 12 V"
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.8",
+     "texto": "Diferenciales: botón de test y tiempo de disparo a IΔn.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tiempo de disparo a IΔn",
+         "unidad": "ms",
+         "tipo": "num",
+         "crit": "dif_ms"
+        }
+       ],
+       "nota": "por diferencial",
+       "multi": true
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.9",
+     "texto": "Impedancia de bucle en cabecera y en el circuito final más lejano. Si salta el diferencial aguas arriba, medir con 15 mA y anotarlo.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Zs cabecera",
+         "unidad": "Ω",
+         "tipo": "num"
+        },
+        {
+         "label": "Zs circuito final más lejano",
+         "unidad": "Ω",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "SEL",
+       "label": "Corriente de ensayo",
+       "opciones": [
+        "Normal (sin disparo)",
+        "15 mA (disparo aguas arriba)"
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.10",
+     "texto": "¿Se interviene con corte?",
+     "campos": [
+      {
+       "t": "SEL",
+       "rol": "corte",
+       "opciones": [
+        "Con corte",
+        "Sin corte"
+       ]
+      }
+     ],
+     "seccion": "En tensión"
+    },
+    {
+     "id": "F2.11",
+     "texto": "5 reglas de oro en la cabecera.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del bloqueo y de la verificación"
+      }
+     ],
+     "seccion": "Con corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.12",
+     "texto": "Limpieza interior.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.13",
+     "texto": "Reapriete de bornas y embarrados.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Con corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.14",
+     "texto": "Megado de las líneas a 500 V c.c. (solo cuadros marcados).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Aislamiento",
+         "unidad": "MΩ",
+         "tipo": "num",
+         "crit": "aisl_bt"
+        }
+       ],
+       "nota": "por línea",
+       "multi": true
+      }
+     ],
+     "seccion": "Con corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.15",
+     "texto": "Continuidad de los conductores de protección.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Continuidad",
+         "unidad": "Ω",
+         "tipo": "num",
+         "crit": "cont"
+        }
+       ]
+      }
+     ],
+     "seccion": "Con corte",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.16",
+     "texto": "Circuitos y componentes rotulados y coincidentes con el unifilar.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.17",
+     "texto": "Código de colores de los conductores en toda su longitud; el verde-amarillo solo se usa como protección.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.18",
+     "texto": "Sin puntas de cable sueltas o sin rematar.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.19",
+     "texto": "Conductores flexibles con puntera; un solo conductor por borne salvo que el borne lo admita.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.20",
+     "texto": "Terminales con el agujero adecuado al tornillo.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.21",
+     "texto": "Entrada de cables con prensaestopas correcto, un cable por prensaestopas y entradas de reserva tapadas (grado IP).",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.22",
+     "texto": "Sin aberturas en la envolvente; protección mínima IP2X / IPXXB.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.23",
+     "texto": "Selectividad de diferenciales y protecciones con la de aguas arriba (según el unifilar).",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.24",
+     "texto": "Envolvente y puerta conectadas a tierra.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.25",
+     "texto": "Si hubo corte: reponer y comprobar tensión y cargas.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión",
+         "unidad": "V",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "SINO"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)",
+     "cond": "corte"
+    },
+    {
+     "id": "F2.26",
+     "texto": "Fotos del interior después y del cuadro cerrado.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 2
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    },
+    {
+     "id": "F2.27",
+     "texto": "Defectos con clase A/B/C/D y, si corresponde, nº de constatación GnO que se cierra.",
+     "campos": [
+      {
+       "t": "DEFECTOS"
+      }
+     ],
+     "seccion": "Lista de comprobación NEN 1010 (con o sin corte)"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "titulo": "CGBT Okken (si no se hizo con el guion MT)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F3.1",
+     "texto": "Limpieza por columnas, reapriete y ajustes frente al plano Okken.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por columna"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "titulo": "Alumbrado normal",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F4.1",
+     "texto": "Recorrido de la zona y número de luminarias fundidas o dañadas.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Luminarias KO",
+         "unidad": "nº",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "titulo": "Alumbrado de emergencia (por luminaria)",
+   "repetir": "luminaria",
+   "pasos": [
+    {
+     "id": "F5.1",
+     "texto": "Seleccionar o escanear la luminaria (código y modelo del recuento).",
+     "campos": [
+      {
+       "t": "ID",
+       "label": "Código y modelo de la luminaria",
+       "qr": true
+      }
+     ]
+    },
+    {
+     "id": "F5.2",
+     "texto": "Ensayo de funcionamiento con fallo de red simulado.",
+     "campos": [
+      {
+       "t": "OKKO"
+      },
+      {
+       "t": "FOTO*",
+       "nota": "de las KO"
+      }
+     ]
+    },
+    {
+     "id": "F5.3",
+     "texto": "Una vez al año, ensayo de duración.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Autonomía",
+         "unidad": "min",
+         "tipo": "num",
+         "crit": "autonomia"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F5.4",
+     "texto": "Limpieza del difusor y estado del pictograma de evacuación.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.5",
+     "texto": "Reponer red y comprobar el testigo de carga.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "titulo": "Cierre de zona",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F6.1",
+     "texto": "Foto final de la zona.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F6.2",
+     "texto": "Material usado.",
+     "campos": [
+      {
+       "t": "TXT"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F6.3",
+     "texto": "Resumen automático: cuadros y luminarias revisados, defectos por clase, constataciones GnO cerradas.",
+     "campos": [
+      {
+       "t": "RESUMEN"
+      }
+     ]
+    },
+    {
+     "id": "F6.4",
+     "texto": "Firma del WV.",
+     "campos": [
+      {
+       "t": "FIRMA",
+       "quien": [
+        "WV (responsable del trabajo)"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reglas": [
+  "NEN 1010: diseño y verificación de instalaciones BT (equivale al REBT).",
+  "NEN 3140: trabajo seguro en BT e inspección periódica (GnO ha fijado 1 vez cada 4 años).",
+  "NEN 3840 / NEN-EN 50110: trabajo seguro en MT.",
+  "NEN-EN 1838 y NEN-EN 50172: alumbrado de emergencia.",
+  "Solo interviene personal designado por escrito según NEN 3140 / NEN 3840: VP (vakbekwaam persoon) para trabajos y maniobras; VOP (voldoende onderricht persoon) solo como ayudante. La app guarda la designación y su caducidad.",
+  "Cada trabajo tiene un responsable de la instalación (IV, installatieverantwoordelijke) y un responsable del trabajo (WV, werkverantwoordelijke). Ambos se registran en la OT.",
+  "Antes de empezar, LMRA (Last Minute Risk Analysis) en la propia app: lista de comprobación firmada por el equipo.",
+  "Los cortes se coordinan con GXO por zonas y se registran con su autorización (werkvergunning si la piden).",
+  "Fotos antes y después, unifilar, 5 reglas de oro, material y firma: igual que en Sabón.",
+  "Idioma: la app debe poder mostrar los pasos en castellano e inglés y generar el informe en inglés si lo pide el cliente o el inspector."
+ ]
+}

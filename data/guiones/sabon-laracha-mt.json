@@ -1,0 +1,884 @@
+{
+ "id": "sabon-laracha-mt",
+ "tipo": "MT",
+ "titulo": "Mantenimiento MT de centro de transformación",
+ "intro": "Se aplica a cada CT de Sabón (A–K, 1–3, FV Zara.com, Centro de Entrega, Aerogenerador) y de Laracha (A, B, Nave, FV). Diez fases en orden; la 2 se hace en tensión y de la 3 a la 9 con corte.",
+ "fases": [
+  {
+   "n": 0,
+   "titulo": "Preparación (en oficina)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F0.1",
+     "texto": "Abrir OT y seleccionar el centro. Descargar unifilar, informe del año anterior y defectos pendientes.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.2",
+     "texto": "Confirmar fecha y hora del corte con el cliente y con mantenimiento de la instalación (Genelek o quien corresponda).",
+     "campos": [
+      {
+       "t": "TXT",
+       "det": "persona de contacto y hora"
+      }
+     ]
+    },
+    {
+     "id": "F0.3",
+     "texto": "Seleccionar equipos de medida: medidor de aislamiento MT (HT GSC60), telurómetro/multifunción (Metrel MI3100SE), detector de tensión MT, cámara termográfica, pinza.",
+     "campos": [
+      {
+       "t": "SEL",
+       "fuente": "equipos",
+       "multi": true
+      }
+     ]
+    },
+    {
+     "id": "F0.4",
+     "texto": "Comprobar EPIs: guantes MT clase 3, pantalla facial, ropa ignífuga, calzado dieléctrico, equipos de puesta a tierra portátiles.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 1,
+   "titulo": "Llegada e identificación",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F1.1",
+     "texto": "Foto del acceso y de la puerta del CT con su rotulación.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.2",
+     "texto": "Foto de la sala desde la puerta, antes de entrar.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.3",
+     "texto": "Confirmar identificación del centro (placa o QR).",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F1.4",
+     "texto": "Foto del esquema unifilar colgado en la sala; si no está, marcar I.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F1.5",
+     "texto": "Material de seguridad presente y en estado: banqueta, pértiga, guantes (fecha del ensayo), extintor, cartel de 5 reglas de oro, cartel de primeros auxilios, señalización de riesgo eléctrico.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por elemento"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "titulo": "Inspección sin corte (en tensión)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F2.1",
+     "texto": "Edificio y obra civil: puertas, cerraduras, rejillas de ventilación, humedades, foso de aceite, alumbrado de la sala, limpieza general.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    },
+    {
+     "id": "F2.2",
+     "texto": "Temperatura del transformador (termómetro o centralita) y fases R/S/T si se dispone.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.3",
+     "texto": "Termografía de celdas, bornas del trafo, conexiones BT y cuadro de BT.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "termica": true
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura máxima",
+         "unidad": "°C",
+         "tipo": "num"
+        },
+        {
+         "label": "Temperatura de referencia",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.4",
+     "texto": "Celdas: manómetros SF6 en zona verde, indicadores de presencia de tensión, detectores de paso de falta, relés sin alarmas.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por celda"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F2.5",
+     "texto": "Foto de los contadores de maniobras de cada celda.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Nº de maniobras",
+         "unidad": "nº",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.6",
+     "texto": "Ruidos o olores anormales.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "TXT"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "titulo": "Corte de tensión (5 reglas de oro)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F3.1",
+     "texto": "Registrar hora de inicio del corte.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Hora",
+         "unidad": "",
+         "tipo": "hora"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F3.2",
+     "texto": "Abrir con corte visible todas las fuentes de tensión.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.3",
+     "texto": "Bloquear los aparatos de corte y señalizar.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.4",
+     "texto": "Verificar ausencia de tensión con detector MT (probar antes el detector).",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.5",
+     "texto": "Poner a tierra y en cortocircuito.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.6",
+     "texto": "Delimitar y señalizar la zona de trabajo.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "titulo": "Celdas MT (repetir por cada celda)",
+   "repetir": "celda",
+   "pasos": [
+    {
+     "id": "F4.1",
+     "texto": "Seleccionar celda (nº y función: línea, protección, interruptor, medida, remonte).",
+     "campos": [
+      {
+       "t": "SEL",
+       "label": "Función de la celda",
+       "opciones": [
+        "Línea",
+        "Protección",
+        "Interruptor",
+        "Medida",
+        "Remonte",
+        "Otra"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F4.2",
+     "texto": "Foto de la celda antes de intervenir.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F4.3",
+     "texto": "Limpieza interior y exterior (aspirado, paño seco, sin disolventes sobre aisladores).",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F4.4",
+     "texto": "Reapriete de conexiones de cables y barras.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F4.5",
+     "texto": "Mecanismos de maniobra: accionamiento, engrase, enclavamientos mecánicos y eléctricos, bobinas de apertura/cierre.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por punto"
+      }
+     ]
+    },
+    {
+     "id": "F4.6",
+     "texto": "Fusibles: calibre y estado del percutor.",
+     "campos": [
+      {
+       "t": "SEL",
+       "label": "Calibre del fusible (A)",
+       "libre": true,
+       "opciones": [
+        "6,3",
+        "10",
+        "16",
+        "20",
+        "25",
+        "31,5",
+        "40",
+        "50",
+        "63",
+        "80",
+        "100",
+        "125"
+       ]
+      },
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F4.7",
+     "texto": "Relé de protección: ajustes coinciden con el informe anterior.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "de la pantalla de ajustes"
+      }
+     ]
+    },
+    {
+     "id": "F4.8",
+     "texto": "Si hay defecto: foto, clasificación y descripción.",
+     "campos": [
+      {
+       "t": "DEFECTOS"
+      }
+     ]
+    },
+    {
+     "id": "F4.9",
+     "texto": "Foto de la celda después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "titulo": "Transformador",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F5.1",
+     "texto": "Foto de la placa de características (pot. kVA, tensiones, nº de serie, refrigeración).",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "la app guarda los datos para el año siguiente"
+      }
+     ]
+    },
+    {
+     "id": "F5.2",
+     "texto": "Foto del trafo antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F5.3",
+     "texto": "Limpieza de cuba, aisladores y bornas.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.4",
+     "texto": "Reapriete de bornas AT y BT.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.5",
+     "texto": "Posición del regulador de tomas.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "SEL",
+       "label": "Toma del regulador",
+       "opciones": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F5.6",
+     "texto": "Protecciones propias: PT100/termómetro, relé Buchholz o DGPT2, ventiladores. Prueba de disparo/alarma.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por elemento"
+      }
+     ]
+    },
+    {
+     "id": "F5.7",
+     "texto": "Solo trafo en aceite: nivel de aceite, fugas, color del silicagel.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F5.8",
+     "texto": "Aislamiento AT–BT, AT–Tierra, BT–Tierra, a 1 minuto (AT a 5 kV, BT a 1 kV). Registrar temperatura ambiente.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "AT–BT",
+         "unidad": "GΩ",
+         "tipo": "num"
+        },
+        {
+         "label": "AT–Tierra",
+         "unidad": "GΩ",
+         "tipo": "num"
+        },
+        {
+         "label": "BT–Tierra",
+         "unidad": "GΩ",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura ambiente",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "de la pantalla del medidor"
+      }
+     ]
+    },
+    {
+     "id": "F5.9",
+     "texto": "Foto del trafo después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "titulo": "Puestas a tierra",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F6.1",
+     "texto": "Tierra de herrajes (protección).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Resistencia",
+         "unidad": "Ω",
+         "tipo": "num",
+         "crit": "tierra_herrajes"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del telurómetro"
+      }
+     ]
+    },
+    {
+     "id": "F6.2",
+     "texto": "Tierra de neutro (servicio).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Resistencia",
+         "unidad": "Ω",
+         "tipo": "num",
+         "crit": "tierra_neutro"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F6.3",
+     "texto": "Tierra de BT / grupo si existe.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Resistencia",
+         "unidad": "Ω",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F6.4",
+     "texto": "Continuidad de la red de tierras interior (herrajes de celdas, trafo, puertas, rejillas).",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F6.5",
+     "texto": "Tensiones de paso y contacto: solo cuando toque (cada 3 años según RD 337/2014).",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión de paso",
+         "unidad": "V",
+         "tipo": "num"
+        },
+        {
+         "label": "Tensión de contacto",
+         "unidad": "V",
+         "tipo": "num"
+        }
+       ],
+       "nota": "por punto",
+       "multi": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "titulo": "Cables y terminales MT",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F7.1",
+     "texto": "Estado de terminales y conectores enchufables, señales de descargas o calentamiento.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    },
+    {
+     "id": "F7.2",
+     "texto": "Sujeción de cables y paso a zanja/foso.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "titulo": "Cuadro BT del CT (CGBT asociado)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F8.1",
+     "texto": "Foto del cuadro antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F8.2",
+     "texto": "Limpieza y reapriete del interruptor general y salidas.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F8.3",
+     "texto": "Ajustes del interruptor general (Ir, Isd, Ii) coinciden con el unifilar.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del disparador"
+      }
+     ]
+    },
+    {
+     "id": "F8.4",
+     "texto": "Foto después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "titulo": "Reposición del servicio",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F9.1",
+     "texto": "Retirar herramientas, material y puestas a tierra portátiles.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F9.2",
+     "texto": "Retirar señalización y bloqueos.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F9.3",
+     "texto": "Maniobras de reposición en orden inverso.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F9.4",
+     "texto": "Comprobar tensión en BT y ausencia de alarmas.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión",
+         "unidad": "V",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F9.5",
+     "texto": "Registrar hora de fin del corte.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Hora",
+         "unidad": "",
+         "tipo": "hora"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "titulo": "Cierre",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F10.1",
+     "texto": "Foto de la sala al terminar, desde el mismo punto que la inicial.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F10.2",
+     "texto": "Material usado: lista (grasa, fusibles, tornillería, limpiador…) y foto.",
+     "campos": [
+      {
+       "t": "TXT"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F10.3",
+     "texto": "Revisar la lista de defectos generada; añadir propuesta de solución a cada uno.",
+     "campos": [
+      {
+       "t": "TXT"
+      }
+     ]
+    },
+    {
+     "id": "F10.4",
+     "texto": "Resultado global: FAVORABLE / CONDICIONADO / DESFAVORABLE.",
+     "campos": [
+      {
+       "t": "SEL",
+       "rol": "resultado",
+       "opciones": [
+        "FAVORABLE",
+        "CONDICIONADO",
+        "DESFAVORABLE"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F10.5",
+     "texto": "Firma del técnico y, si está presente, del responsable del cliente.",
+     "campos": [
+      {
+       "t": "FIRMA",
+       "quien": [
+        "Técnico",
+        "Responsable del cliente (si está presente)"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reglas": [
+  "Ningún trabajo empieza sin orden de trabajo (OT) abierta en la app y sin el centro o cuadro identificado (lista o código QR).",
+  "Foto de la sala o zona antes de entrar y al terminar, siempre desde el mismo punto.",
+  "Foto del esquema unifilar del centro o cuadro antes de maniobrar o tocar nada.",
+  "Se decide y registra al principio si el trabajo es con corte o sin corte de tensión. Con corte se aplican las 5 reglas de oro con foto de cada una.",
+  "Cada medida se guarda con el equipo usado; la app avisa si el certificado de calibración del equipo está caducado.",
+  "Todo punto marcado I obliga a: foto del defecto, clasificación (Muy grave / Grave / Leve), descripción y propuesta de solución.",
+  "Lo corregido en el momento se marca A, con foto del antes y del después.",
+  "Al cerrar: material usado (lista + foto), resultado global y firma del técnico. La app genera el informe con el formato de los informes Osmos."
+ ]
+}
