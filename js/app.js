@@ -9,7 +9,7 @@ import { generarInforme, csvInforme, nombreInforme } from './pdf.js';
 import { crearZip, leerZip } from './zip.js';
 import { enviar, tamano, descargar } from './share.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -28,6 +28,10 @@ const LMRA_DEF = [
   '¿Conocemos la ruta de evacuación y el teléfono de emergencia?',
   '¿Las condiciones del entorno son seguras (humedad, luz, espacio)?',
 ];
+
+// Informe en inglés para Lelystad; en castellano para el resto
+const idiomaInforme = perfil => perfil === 'lelystad' ? 'en' : 'es';
+const AVISO_EN = '<div class="aviso-en">🇬🇧 El informe de Lelystad sale en inglés: escribe este texto en inglés.</div>';
 
 // ---------------------------------------------------------------- utilidades UI
 function toast(msg, tipo = '') {
@@ -131,7 +135,7 @@ const caducado = f => f && new Date(f) < new Date(hoy());
 // ---------------------------------------------------------------- arranque
 async function init() {
   S.ajustes = { ...AJUSTES_DEF, ...(await db.kvGet('ajustes')) };
-  setIdioma(S.ajustes.idioma);
+  setIdioma('es'); // la app siempre en castellano; el idioma del informe depende de la instalación
   S.usuario = await auth.getUsuario();
   [S.crit, S.defs] = await Promise.all([datos.criterios(), datos.defectos()]);
   window.addEventListener('hashchange', render);
@@ -442,7 +446,7 @@ async function vPaso(id, fn, instId, idx) {
       <h2 class="paso-t">${esc(tPaso(p))}</h2>
       ${omit ? `<div class="banner">Paso con corte: se omite porque en este ${esc(f.repetir || 'bloque')} se eligió «Sin corte».</div>` : ''}
       <label class="na"><input type="checkbox" id="na" ${r.na ? 'checked' : ''}> ${t('No procede este paso')}</label>
-      <div id="namot" class="${r.na ? '' : 'hidden'}"><input class="inp" id="namotv" placeholder="Motivo (opcional)" value="${esc(r.naMotivo || '')}"></div>
+      <div id="namot" class="${r.na ? '' : 'hidden'}"><input class="inp" id="namotv" placeholder="${perfil === 'lelystad' ? 'Reason (optional, in English)' : 'Motivo (opcional)'}" value="${esc(r.naMotivo || '')}"></div>
       <div id="campos" class="${r.na || omit ? 'off' : ''}"></div>
       <div id="defs"></div>
       <div id="errs"></div>
@@ -538,7 +542,7 @@ async function vPaso(id, fn, instId, idx) {
           ${crits.length ? `<div class="crit">${t('Criterio')}: ${crits.map(x => esc(x.txt)).join(' · ')}</div>` : ''}</div>`;
       }
       case 'SINO': return `<div class="campo"><label class="sino ${r.sino?.[ci] ? 'sel' : ''}"><input type="checkbox" data-sino="${ci}" ${r.sino?.[ci] ? 'checked' : ''}><span>✔ ${c.nota ? esc(c.nota) : 'Hecho / confirmado'}</span></label></div>`;
-      case 'TXT': return `<div class="campo"><label class="lbl">✎ Observación${c.det ? ` (${esc(c.det)})` : ''}<textarea class="inp" rows="3" data-txt="${ci}" placeholder="Escribe o dicta con el micrófono del teclado">${esc(r.txt?.[ci] || '')}</textarea></label></div>`;
+      case 'TXT': return `<div class="campo"><label class="lbl">✎ Observación${c.det ? ` (${esc(c.det)})` : ''}<textarea class="inp" rows="3" data-txt="${ci}" placeholder="${perfil === 'lelystad' ? 'Write in English' : 'Escribe o dicta con el micrófono del teclado'}">${esc(r.txt?.[ci] || '')}</textarea></label>${perfil === 'lelystad' ? AVISO_EN : ''}</div>`;
       case 'SEL': {
         const v = r.sel?.[ci];
         if (c.fuente === 'equipos') {
@@ -717,6 +721,7 @@ function editarDefecto(C, contexto, d, after) {
         <span class="small muted" id="dgrdesc">${esc(cat.desc[d.gravedad] || '')}</span></label>
       <label id="ljus" class="hidden">Justificación del cambio de gravedad<input class="inp" id="djus" value="${esc(d.justif || '')}"></label>
       <label>${t('Ubicación')}<input class="inp" id="dubi" value="${esc(d.ubic)}"></label>
+      ${perfil === 'lelystad' ? AVISO_EN.replace('este texto', 'la descripción, la propuesta y la justificación') : ''}
       <label>${t('Descripción')}<textarea class="inp" id="ddesc" rows="2">${esc(d.desc)}</textarea></label>
       <label>${t('Propuesta')} de solución<textarea class="inp" id="dprop" rows="2">${esc(d.propuesta)}</textarea></label>
       <label>${t('Estado')}<select class="inp" id="dest">${['Abierto', 'Corregido en visita', 'Corregido después'].map(e => `<option ${d.estado === e ? 'selected' : ''} value="${e}">${t(e)}</option>`).join('')}</select></label>
@@ -823,6 +828,8 @@ async function vInforme(id) {
     }));
   });
   const res = resultadoDe(g, m);
+  const LANG = idiomaInforme(perfil);
+  const DIC = LANG === 'en' ? await fetch('data/i18n/en.json').then(r => r.json()).catch(() => ({})) : {};
   app().innerHTML = barra(`${t('Informe')} · ${m.ubicacion}`, { atras: `#m/${m.id}` }) + `
     <main class="pad">
       <div class="card">
@@ -833,7 +840,7 @@ async function vInforme(id) {
       </div>
       ${pendientes.length ? `<details class="banner warn"><summary>Quedan ${pendientes.length} pasos sin completar. Puedes generar el informe igualmente (saldrá incompleto).</summary><ul class="small">${pendientes.slice(0, 40).map(x => `<li>${esc(x)}</li>`).join('')}</ul></details>` : '<div class="banner ok">Todos los pasos completados.</div>'}
       <div class="card form">
-        <label>${t('Idioma')} del informe<select class="inp" id="il"><option value="es">Castellano</option><option value="en" ${perfil === 'lelystad' ? 'selected' : ''}>English</option></select></label>
+        <div class="small muted">Idioma del informe: <b>${LANG === 'en' ? 'inglés (Lelystad)' : 'castellano'}</b></div>
         <label class="chk"><input type="checkbox" id="icsv"> ${t('Enviar también los datos (CSV)')}</label>
         <button class="btn big" id="gen">📄 ${t('Generar informe PDF')}</button>
         <div id="out" class="hidden">
@@ -850,7 +857,7 @@ async function vInforme(id) {
   $('#gen').onclick = async () => {
     const b = $('#gen'); b.disabled = true; b.textContent = 'Generando…';
     try {
-      pdfFile = await generarInforme({ m, g, inst, usuario: S.usuario, getFoto, lang: $('#il').value, logoBytes: await logoBytes() });
+      pdfFile = await generarInforme({ m, g, inst, usuario: S.usuario, getFoto, lang: LANG, logoBytes: await logoBytes() });
       if (!pendientes.length && m.estado === 'curso') { m.estado = 'terminado'; m.terminado = new Date().toISOString(); await guardarM(m, g, perfil); }
       $('#out').classList.remove('hidden');
       $('#info').textContent = `${pdfFile.name} · ${tamano(pdfFile.size)}`;
@@ -860,12 +867,16 @@ async function vInforme(id) {
   };
   const archivos = () => {
     const fs = [pdfFile];
-    if ($('#icsv').checked) fs.push(new File([csvInforme(m, g)], pdfFile.name.replace(/\.pdf$/, '.csv'), { type: 'text/csv' }));
+    if ($('#icsv').checked) fs.push(new File([csvInforme(m, g, LANG, DIC)], pdfFile.name.replace(/\.pdf$/, '.csv'), { type: 'text/csv' }));
     return fs;
   };
-  const texto = () => `Informe de mantenimiento ${g.tipo} ${m.instNombre} – ${m.ubicacion} – ${fmtF(m.fecha)}. OT ${m.ot}. Resultado: ${resultadoDe(g, m) || '-'}. Defectos: ${m.defectos.length}.`;
+  const fEN = d => new Date(d).toLocaleDateString('en-GB');
+  const ub = (DIC[m.ubicacion] || m.ubicacion);
+  const texto = () => LANG === 'en'
+    ? `${{ MT: 'MV', BT: 'LV' }[g.tipo]} maintenance report ${m.instNombre} – ${ub} – ${fEN(m.fecha)}. WO ${m.ot}. Result: ${DIC[resultadoDe(g, m)] || resultadoDe(g, m) || '-'}. Defects: ${m.defectos.length}.`
+    : `Informe de mantenimiento ${g.tipo} ${m.instNombre} – ${m.ubicacion} – ${fmtF(m.fecha)}. OT ${m.ot}. Resultado: ${resultadoDe(g, m) || '-'}. Defectos: ${m.defectos.length}.`;
   const env = async canal => {
-    const r = await enviar({ files: archivos(), titulo: `Informe mantenimiento ${m.instNombre} ${m.ubicacion} ${fmtF(m.fecha)}`, texto: texto(), canal, destinatario: S.ajustes.destinatario });
+    const r = await enviar({ files: archivos(), titulo: LANG === 'en' ? `Maintenance report ${m.instNombre} ${ub} ${fEN(m.fecha)}` : `Informe mantenimiento ${m.instNombre} ${m.ubicacion} ${fmtF(m.fecha)}`, texto: texto(), canal, destinatario: S.ajustes.destinatario });
     if (r === 'cancelado') return;
     if (canal !== 'guardar') { m.enviado.push({ fecha: new Date().toISOString(), canal }); if (m.estado !== 'curso') m.estado = 'enviado'; await guardarM(m, g, perfil); }
     toast(r === 'compartido' ? 'Enviado' : canal === 'guardar' ? 'Guardado' : 'Archivo descargado: adjúntalo en el mensaje', 'ok');
@@ -938,8 +949,8 @@ async function vAjustes() {
         <p class="small muted">La huella protege el acceso en este móvil. Los datos no salen del dispositivo salvo que los envíes.</p>
       </section>
       <section class="card form">
-        <h3>${t('Idioma')} y envío</h3>
-        <label>${t('Idioma')}<select class="inp" id="lang"><option value="es">Castellano</option><option value="en" ${A.idioma === 'en' ? 'selected' : ''}>English</option></select></label>
+        <h3>Envío de informes</h3>
+        <p class="small muted">La app está en castellano. Los informes de Lelystad se generan en inglés y los de Sabón y Laracha en castellano.</p>
         <label>Destinatario por defecto de los informes (correo)<input class="inp" id="dest" type="email" value="${esc(A.destinatario)}"></label>
       </section>
       <section class="card">
@@ -993,7 +1004,6 @@ async function vAjustes() {
     if (!/^\d{6}$/.test(n || '')) return toast('El PIN debe tener 6 cifras', 'err');
     await auth.cambiarPin(n); S.usuario = await auth.getUsuario(); toast('PIN cambiado', 'ok');
   };
-  $('#lang').onchange = async e => { A.idioma = e.target.value; setIdioma(A.idioma); await guardarAjustes(); render(); };
   $('#dest').onchange = async e => { A.destinatario = e.target.value.trim(); await guardarAjustes(); };
   $('#addeq').onclick = () => editarEquipo(null, render);
   $$('[data-eq]').forEach(b => b.onclick = () => editarEquipo(A.equipos[+b.dataset.eq], render));
@@ -1111,16 +1121,17 @@ async function crearEjemplos() {
       ubicacion: ubic, ot: 'OT-EJEMPLO-' + Math.floor(Math.random() * 900 + 100), fecha: hoy(),
       tecnicos: [S.usuario.nombre], resp: {}, inst: {}, defectos: [], equiposUsados: [], enviado: [], pct: 0, version: VERSION,
     };
-    // Fase 0 contestada como ejemplo
+    // Fase 0 contestada como ejemplo (en inglés en Lelystad, porque su informe sale en inglés)
+    const en = inst.perfil === 'lelystad';
     g.fases[0].pasos.forEach(p => {
       const r = m.resp[p.id] = {};
       p.campos.forEach((c, ci) => {
         if (c.t === 'SINO') (r.sino ||= {})[ci] = true;
-        if (c.t === 'TXT') (r.txt ||= {})[ci] = 'Ejemplo: acordado con el responsable de mantenimiento, 8:00–12:00.';
+        if (c.t === 'TXT') (r.txt ||= {})[ci] = en ? 'Example: agreed with GXO, 08:00–12:00.' : 'Ejemplo: acordado con el responsable de mantenimiento, 8:00–12:00.';
         if (c.t === 'SEL' && c.fuente === 'equipos') (r.sel ||= {})[ci] = [];
-        if (c.t === 'ROLES') r.roles = { IV: 'Responsable GXO (ejemplo)', WV: S.usuario.nombre };
+        if (c.t === 'ROLES') r.roles = { IV: 'GXO site manager (example)', WV: S.usuario.nombre };
       });
-      if (p.campos.some(c => c.t === 'SEL' && c.fuente === 'equipos')) r.na = true, r.naMotivo = 'Ejemplo sin equipos dados de alta';
+      if (p.campos.some(c => c.t === 'SEL' && c.fuente === 'equipos')) r.na = true, r.naMotivo = en ? 'Example: no instruments registered' : 'Ejemplo sin equipos dados de alta';
     });
     m.pct = progresoTotal(g, m, S.crit, perfilDe(inst)).pct;
     await db.put('mant', m);

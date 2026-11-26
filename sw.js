@@ -1,13 +1,13 @@
 // Service worker: la app funciona sin conexión una vez instalada.
 // Al cambiar cualquier archivo, sube VERSION para que los móviles descarguen la nueva versión.
-const VERSION = 'osmos-mant-v1.0.4';
+const VERSION = 'osmos-mant-v1.1.1';
 const ARCHIVOS = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/db.js', 'js/auth.js', 'js/guion.js', 'js/i18n.js', 'js/fotos.js', 'js/pdf.js', 'js/zip.js', 'js/share.js',
   'vendor/pdf-lib.min.js',
   'assets/logo-osmos.png', 'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/maskable-512.png',
   'assets/icons/apple-touch-icon.png', 'assets/icons/favicon-32.png',
-  'data/instalaciones.json', 'data/defectos.json', 'data/criterios.json',
+  'data/instalaciones.json', 'data/i18n/en.json', 'data/defectos.json', 'data/criterios.json',
   'data/guiones/sabon-laracha-mt.json', 'data/guiones/sabon-laracha-bt.json',
   'data/guiones/lelystad-mt.json', 'data/guiones/lelystad-bt.json',
 ];

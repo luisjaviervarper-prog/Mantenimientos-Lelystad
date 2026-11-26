@@ -5,7 +5,8 @@ App web instalable (PWA) para hacer en obra los mantenimientos de MT y BT siguie
 - Entrada con **huella / Face ID** (y PIN de 6 cifras de respaldo).
 - Guiones de **Sabón, Laracha (MT y BT)** y **Lelystad (MT y BT)**, paso a paso, con fotos, medidas, C/I/N/A, firmas y defectos.
 - Criterios de aceptación: la medida que no cumple se marca en rojo y obliga a abrir un defecto.
-- **Informe PDF** con logo, colores OSMOS, fotos, defectos y firmas, en castellano o inglés.
+- **Idioma:** la app está siempre en castellano. Los informes de **Lelystad salen en inglés** (pasos, fases, defectos, criterios, medidas, resumen y CSV) y los de Sabón y Laracha en castellano.
+- **Informe PDF** con logo, colores OSMOS, fotos, defectos y firmas.
 - Envío del informe (y de los datos en CSV) **por WhatsApp o correo**.
 - **Copia de seguridad completa** (.zip con datos y fotos) que se envía por WhatsApp, y restauración.
 - Funciona **sin conexión** una vez abierta la primera vez.
@@ -40,7 +41,8 @@ La primera vez se registra el técnico (nombre, empresa, correo, teléfono y PIN
    - Si un paso no aplica: «No procede este paso».
 3. Fases repetibles: **celdas, trafos, cuadros y luminarias** se añaden una a una (con QR si el lector del navegador lo permite).
 4. **Informe** → *Generar informe PDF* → *Enviar por WhatsApp* / *Enviar por correo* / *Guardar en el móvil*.
-5. **Ajustes**: equipos de medida y caducidad de calibración (avisa si está caducada), personal designado VP/VOP (Lelystad), idioma, destinatario por defecto, copia de seguridad y restauración.
+5. **Ajustes**: equipos de medida y caducidad de calibración (avisa si está caducada), personal designado VP/VOP (Lelystad), destinatario por defecto, copia de seguridad y restauración.
+6. **Lelystad:** los textos que escribe el técnico (observaciones, descripción y propuesta de los defectos) se copian tal cual al informe, así que la app avisa de que se escriban en inglés.
 
 ## 4. Cómo funcionan WhatsApp, el correo y la huella
 
@@ -61,8 +63,11 @@ Los pasos no están en el código, están en archivos JSON:
 | `data/defectos.json` | Catálogos de defectos y gravedades (Muy grave/Grave/Leve y A/B/C/D) |
 | `data/criterios.json` | Límites de las medidas |
 | `data/instalaciones.json` | Instalaciones, centros, zonas y preguntas del LMRA |
+| `data/i18n/en.json` | Traducciones al inglés para los informes de Lelystad |
 
-Se pueden editar directamente en GitHub (icono del lápiz). Cada paso tiene `texto` y una lista de `campos` (`FOTO`, `CINA`, `MED`, `SINO`, `TXT`, `SEL`, `ID`, `OKKO`, `FIRMA`, `LMRA`, `ROLES`, `RESUMEN`, `DEFECTOS`). Para mostrar un paso en inglés, añade `"texto_en": "..."`.
+Se pueden editar directamente en GitHub (icono del lápiz). Cada paso tiene `texto` y una lista de `campos` (`FOTO`, `CINA`, `MED`, `SINO`, `TXT`, `SEL`, `ID`, `OKKO`, `FIRMA`, `LMRA`, `ROLES`, `RESUMEN`, `DEFECTOS`).
+
+**Traducción al inglés (informes de Lelystad):** `data/i18n/en.json` es un diccionario `"texto en castellano": "texto en inglés"`. Si cambias o añades un paso, defecto, opción o zona de Lelystad, añade aquí su traducción con el texto en castellano **exactamente igual**; si falta, ese texto saldrá en castellano en el informe.
 
 También se pueden regenerar desde los `.docx` de Óscar (`docs/`):
 
@@ -79,7 +84,7 @@ python3 tools/generar_guiones.py
 
 - Los criterios marcados como «criterio Osmos» en los guiones son propuestas: revisar en `data/criterios.json`.
 - Las preguntas del **LMRA** son una propuesta: cambiarlas en `data/instalaciones.json` (campo `lmra` de Lelystad).
-- El texto de los pasos está en castellano; la interfaz y el informe tienen versión en inglés. Para los pasos en inglés hay que añadir `texto_en`.
+- Revisar la traducción técnica al inglés de `data/i18n/en.json` (términos como WV/IV, VP/VOP, GnO se han dejado como en Lelystad).
 - El logo de `assets/logo-osmos.png` es el de la firma de correo (pequeño). Conviene sustituirlo, y los iconos de `assets/icons/`, por versiones de alta resolución.
 - Lectura de QR: funciona en Chrome Android; en iPhone (Safari) se escribe el código a mano.
 - La copia de seguridad no va cifrada: quien tenga el .zip ve los datos.

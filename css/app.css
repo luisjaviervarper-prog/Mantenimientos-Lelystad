@@ -196,3 +196,4 @@ details.banner summary { cursor: pointer; }
 .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: var(--azul); color: #fff; padding: 12px 18px; border-radius: 12px; z-index: 99; box-shadow: var(--sombra); max-width: 90vw; transition: opacity .4s; }
 .toast.ok { background: var(--verde); } .toast.err { background: var(--rojo); } .toast.warn { background: var(--ambar); color: var(--azul); }
 .toast.out { opacity: 0; }
+.aviso-en { margin-top: 6px; font-size: .8rem; color: var(--azul); background: #FFF5D6; border-left: 4px solid var(--ambar); border-radius: 6px; padding: 6px 8px; }

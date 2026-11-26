@@ -24,11 +24,24 @@ function limpio(s) {
   return o;
 }
 
+const corta = (t, n) => t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n) > 20 ? t.lastIndexOf(' ', n) : n) + '…';
+
 export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es', logoBytes }) {
   const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
   const T = s => tIdioma(s, lang);
+  // Textos de guiones, catálogos y listas: diccionario data/i18n/en.json (solo informe en inglés)
+  const DIC = lang === 'en' ? await fetch('data/i18n/en.json').then(r => r.json()).catch(() => ({})) : {};
+  const NOMBRES = { Celda: 'Cell', Trafo: 'Transformer', Cuadro: 'Panel', Luminaria: 'Luminaire' };
+  const X = s => {
+    if (lang !== 'en' || s == null) return s;
+    if (DIC[s] != null) return DIC[s];
+    const mm = String(s).match(/^(Celda|Trafo|Cuadro|Luminaria)\s+(\S+)$/);
+    if (mm) return NOMBRES[mm[1]] + ' ' + mm[2];
+    return s;
+  };
+  const XU = s => String(s ?? '').split(' · ').map(X).join(' · ');
   const pdf = await PDFDocument.create();
-  pdf.setTitle(`Informe de mantenimiento ${inst.nombre} ${m.ubicacion}`);
+  pdf.setTitle(`${lang === 'en' ? 'Maintenance report' : 'Informe de mantenimiento'} ${inst.nombre} ${X(m.ubicacion)}`);
   pdf.setAuthor('OSMOS Sistemas Eléctricos');
   pdf.setCreator('OSMOS Mantenimiento');
   const F = await pdf.embedFont(StandardFonts.Helvetica);
@@ -40,7 +53,7 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
   const crit = await fetch('data/criterios.json').then(r => r.json());
   let page, y;
 
-  const titulo = `${T('INFORME DE MANTENIMIENTO')} ${g.tipo}`;
+  const titulo = `${T('INFORME DE MANTENIMIENTO')} ${lang === 'en' ? { MT: 'MV', BT: 'LV' }[g.tipo] : g.tipo}`;
   function cabecera() {
     page = pdf.addPage([W, H]);
     if (logo) {
@@ -48,7 +61,7 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
       page.drawImage(logo, { x: M, y: H - M - h + 6, width: w, height: h });
     }
     page.drawText(limpio(titulo), { x: W - M - FB.widthOfTextAtSize(limpio(titulo), 11), y: H - M - 6, size: 11, font: FB, color: C(AZUL) });
-    const sub = limpio(`${inst.nombre} · ${m.ubicacion} · OT ${m.ot || '-'}`);
+    const sub = limpio(`${inst.nombre} · ${X(m.ubicacion)} · ${lang === 'en' ? 'WO' : 'OT'} ${m.ot || '-'}`);
     page.drawText(sub, { x: W - M - F.widthOfTextAtSize(sub, 8.5), y: H - M - 20, size: 8.5, font: F, color: C(GRIS) });
     page.drawRectangle({ x: M, y: H - M - 36, width: CW, height: 2, color: C(AMBAR) });
     y = H - M - 52;
@@ -181,8 +194,8 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
   const roles = Object.values(m.resp).find(r => r.roles)?.roles;
   tabla([{ w: 0.3, head: '' }, { w: 0.7, head: '' }], [
     [{ text: T('Instalación'), bold: true }, inst.nombre + (inst.cliente ? ` (${inst.cliente})` : '')],
-    [{ text: T('Guion'), bold: true }, `${g.tipo} · ${g.titulo}`],
-    [{ text: g.tipo === 'MT' ? T('Centro / estación') : T('Edificio / zona'), bold: true }, m.ubicacion],
+    [{ text: T('Guion'), bold: true }, `${lang === 'en' ? { MT: 'MV', BT: 'LV' }[g.tipo] : g.tipo} · ${X(g.titulo)}`],
+    [{ text: g.tipo === 'MT' ? T('Centro / estación') : T('Edificio / zona'), bold: true }, X(m.ubicacion)],
     [{ text: T('Nº de OT'), bold: true }, m.ot || '-'],
     [{ text: T('Fecha'), bold: true }, fmtFecha(m.fecha) + (m.terminado ? ' → ' + fmtFecha(m.terminado) : '')],
     [{ text: T('Técnicos'), bold: true }, (m.tecnicos || []).join(', ') || usuario?.nombre || '-'],
@@ -192,17 +205,18 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
 
   seccion(T('Resumen'));
   const rc = { FAVORABLE: VERDE, CONDICIONADO: AMBAR, DESFAVORABLE: ROJO }[resultado] || GRIS;
+  const EN = lang === 'en';
   espacio(40);
   page.drawRectangle({ x: M, y: y - 30, width: CW, height: 30, borderColor: C(rc), borderWidth: 1.5, color: rgb(1, 1, 1) });
-  page.drawText(limpio(`${T('Resultado global')}: ${resultado || '-'}`), { x: M + 10, y: y - 19, size: 12, font: FB, color: C(rc) });
+  page.drawText(limpio(`${T('Resultado global')}: ${X(resultado) || '-'}`), { x: M + 10, y: y - 19, size: 12, font: FB, color: C(rc) });
   y -= 40;
   const lineasRes = [
     `${T('Defectos')}: ${R.nDefectos}  (` + escala.map(e => `${e}: ${R.porGravedad[e] || 0}`).join(' · ') + ')',
     `C: ${R.cont.C} · I: ${R.cont.I} · N: ${R.cont.N} · A: ${R.cont.A}`,
   ];
-  Object.entries(R.inst).forEach(([k, v]) => lineasRes.push(`${k[0].toUpperCase() + k.slice(1)}s: ${v}`));
-  if (R.lumKO) lineasRes.push(`Luminarias de emergencia KO: ${R.lumKO}`);
-  if (perfil === 'lelystad') lineasRes.push(`Constataciones GnO cerradas: ${R.gnoCerradas}`);
+  Object.entries(R.inst).forEach(([k, v]) => { const n = X(k); lineasRes.push(`${n[0].toUpperCase() + n.slice(1)}s: ${v}`); });
+  if (R.lumKO) lineasRes.push(`${EN ? 'Failed emergency luminaires' : 'Luminarias de emergencia KO'}: ${R.lumKO}`);
+  if (perfil === 'lelystad') lineasRes.push(`${EN ? 'GnO findings closed' : 'Constataciones GnO cerradas'}: ${R.gnoCerradas}`);
   const hc = horasCorte(g, m);
   if (hc.length) lineasRes.push(`${T('Horario del corte')}: ` + hc.map(h => h.hora).join(' → '));
   lineasRes.forEach(l => parrafo(l, { size: 9 }));
@@ -213,16 +227,17 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
   const fotosFase = [];
   for (const f of g.fases) {
     const insts = f.repetir ? instanciasDe(m, f) : [null];
-    if (f.repetir && !insts.length) { subseccion(`${T('Fase')} ${f.n} · ${f.titulo}`); parrafo(lang === 'en' ? `No ${f.repetir}s recorded.` : `Sin ${f.repetir}s registrados.`, { color: GRIS }); continue; }
+    if (f.repetir && !insts.length) { subseccion(`${T('Fase')} ${f.n} · ${X(f.titulo)}`); parrafo(lang === 'en' ? `No ${X(f.repetir)}s recorded.` : `Sin ${f.repetir}s registrados.`, { color: GRIS }); continue; }
     for (const ins of insts) {
-      subseccion(`${T('Fase')} ${f.n} · ${f.titulo}${ins ? ' — ' + ins.nombre : ''}`);
+      subseccion(`${T('Fase')} ${f.n} · ${X(f.titulo)}${ins ? ' — ' + X(ins.nombre) : ''}`);
       const rows = [];
       for (const p of f.pasos) {
         const iid = ins?.id || null;
         const r = m.resp[clave(p, iid)] || {};
+        const ptxt = X(p.texto);
         let res = [], det = [];
-        if (pasoOmitido(f, p, m, iid)) { rows.push([p.texto, { text: 'Sin corte', color: GRIS }, '']); continue; }
-        if (r.na) { rows.push([p.texto, { text: T('No procede'), color: GRIS }, r.naMotivo || '']); continue; }
+        if (pasoOmitido(f, p, m, iid)) { rows.push([ptxt, { text: X('Sin corte'), color: GRIS }, '']); continue; }
+        if (r.na) { rows.push([ptxt, { text: T('No procede'), color: GRIS }, r.naMotivo || '']); continue; }
         let color = null;
         p.campos.forEach((c, ci) => {
           switch (c.t) {
@@ -232,36 +247,36 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
             case 'SEL': {
               const v = r.sel?.[ci];
               if (c.fuente === 'equipos') det.push((v || []).join(', '));
-              else if (v) det.push((c.label ? c.label + ': ' : '') + v);
+              else if (v) det.push((c.label ? X(c.label) + ': ' : '') + X(v));
               break;
             }
-            case 'ID': if (r.id) det.push(r.id); break;
+            case 'ID': if (r.id) det.push(X(r.id)); break;
             case 'TXT': if (r.txt?.[ci]) det.push(r.txt[ci]); break;
             case 'MED': (r.med?.[ci] || []).forEach((fila, fi) => {
-              const ev = evaluarFila(p, c, fila, crit, perfil);
-              const partes = c.campos.map((cc, k) => `${cc.label}: ${fila[k] ?? '-'}${cc.unidad ? ' ' + cc.unidad : ''}${ev.campos[k] && !ev.campos[k].ok ? ' (!)' : ''}`);
+              const ev = evaluarFila(p, c, fila, crit, perfil, lang);
+              const partes = c.campos.map((cc, k) => `${X(cc.label)}: ${EN ? String(fila[k] ?? '-').replace(/^(-?\d+),(\d+)$/, '$1.$2') : (fila[k] ?? '-')}${cc.unidad ? ' ' + cc.unidad : ''}${ev.campos[k] && !ev.campos[k].ok ? ' (!)' : ''}`);
               det.push((r.med[ci].length > 1 ? `#${fi + 1} ` : '') + partes.join(' · ') + (r.medEq?.[ci] ? ` [${r.medEq[ci]}]` : ''));
               ev.extra.forEach(x => det.push(x.msg + (x.ok ? '' : ' (!)')));
               if (ev.campos.some(x => !x.ok) || ev.extra.some(x => !x.ok)) color = ROJO;
             }); break;
-            case 'FIRMA': det.push((lang === 'en' ? 'Signed: ' : 'Firmado: ') + Object.keys(r.firmas || {}).join(', ')); break;
+            case 'FIRMA': det.push((lang === 'en' ? 'Signed: ' : 'Firmado: ') + Object.keys(r.firmas || {}).map(X).join(', ')); break;
             case 'LMRA': if (r.lmra) det.push(`LMRA: ${Object.values(r.lmra).filter(Boolean).length}/${Object.keys(r.lmra).length} OK`); break;
             case 'ROLES': if (r.roles) det.push(`IV: ${r.roles.IV} · WV: ${r.roles.WV}`); break;
-            case 'RESUMEN': det.push(`${R.nDefectos} defectos`); break;
+            case 'RESUMEN': det.push(`${R.nDefectos} ${EN ? (R.nDefectos === 1 ? 'defect' : 'defects') : 'defectos'}`); break;
             case 'DEFECTOS': {
               const n = m.defectos.filter(d => (d.inst || null) === iid).length;
-              det.push(`${n} ${T('Defectos').toLowerCase()}`); break;
+              det.push(`${n} ${EN ? (n === 1 ? 'defect' : 'defects') : 'defectos'}`); break;
             }
-            case 'FOTO': (r.fotos?.[ci] || []).forEach(id => fotosFase.push({ id, pie: `F${f.n}${ins ? ' ' + ins.nombre : ''} · ${p.texto.slice(0, 70)}` })); break;
+            case 'FOTO': (r.fotos?.[ci] || []).forEach(id => fotosFase.push({ id, pie: `F${f.n}${ins ? ' ' + X(ins.nombre) : ''} · ${corta(ptxt, 80)}` })); break;
           }
         });
-        (r.fotosA || []).forEach((id, k) => fotosFase.push({ id, pie: `${k === 0 ? 'Antes' : 'Después'} (A) · ${p.texto.slice(0, 60)}` }));
+        (r.fotosA || []).forEach((id, k) => fotosFase.push({ id, pie: `${k === 0 ? (EN ? 'Before' : 'Antes') : (EN ? 'After' : 'Después')} (A) · ${corta(ptxt, 70)}` }));
         const nfotos = Object.values(r.fotos || {}).flat().length + (r.fotosA || []).length;
-        if (nfotos) det.push(`${nfotos} foto(s)`);
+        if (nfotos) det.push(`${nfotos} ${EN ? 'photo(s)' : 'foto(s)'}`);
         if (r.nota) det.push(r.nota);
         const def = m.defectos.filter(d => d.paso === p.id && (d.inst || null) === iid);
         if (def.length) det.push(def.map(d => `→ ${d.codigo} (${d.gravedad})`).join(' '));
-        rows.push([p.texto, { text: res.join(' / ') || (color === ROJO ? (lang === 'en' ? 'Out of range' : 'Fuera de criterio') : det.length ? '✓' : '-'), color: color || [0.1, 0.1, 0.1], bold: !!color }, det.filter(Boolean).join('\n')]);
+        rows.push([ptxt, { text: res.join(' / ') || (color === ROJO ? (lang === 'en' ? 'Out of range' : 'Fuera de criterio') : det.length ? '✓' : '-'), color: color || [0.1, 0.1, 0.1], bold: !!color }, det.filter(Boolean).join('\n')]);
       }
       tabla([{ w: 0.44, head: T('Paso') }, { w: 0.16, head: T('Resultado') }, { w: 0.40, head: T('Medidas y observaciones') }], rows);
     }
@@ -276,12 +291,12 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
       { w: 0.1, head: T('Código') }, { w: 0.11, head: perfil === 'lelystad' ? T('Clase') : T('Gravedad') },
       { w: 0.2, head: T('Ubicación') }, { w: 0.27, head: T('Descripción') }, { w: 0.2, head: T('Propuesta') }, { w: 0.12, head: T('Estado') },
     ], m.defectos.map(d => [
-      { text: d.codigo, bold: true }, { text: d.gravedad, color: gcol(d.gravedad), bold: true }, d.ubic,
-      d.texto + (d.desc ? '\n' + d.desc : '') + (d.gno ? `\nGnO: ${d.gno}` : '') + (d.justif ? `\n(${d.justif})` : ''),
-      d.propuesta || '-', T(d.estado) + (d.resp ? '\n' + d.resp : ''),
+      { text: d.codigo, bold: true }, { text: d.gravedad, color: gcol(d.gravedad), bold: true }, XU(d.ubic),
+      X(d.texto) + (d.desc ? '\n' + d.desc : '') + (d.gno ? `\nGnO: ${d.gno}` : '') + (d.justif ? `\n(${d.justif})` : ''),
+      d.propuesta || '-', T(d.estado) + (d.resp ? '\n' + X(d.resp) : ''),
     ]), { size: 7.5 });
     const fd = [];
-    m.defectos.forEach(d => (d.fotos || []).forEach(id => fd.push({ id, pie: `${d.codigo} · ${d.ubic}` })));
+    m.defectos.forEach(d => (d.fotos || []).forEach(id => fd.push({ id, pie: `${d.codigo} · ${XU(d.ubic)}` })));
     if (fd.length) { subseccion(T('Fotos') + ' · ' + T('Defectos')); await imagenes(fd); }
   }
 
@@ -305,7 +320,7 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
           page.drawImage(img, { x, y: y - h, width: ww, height: h });
         } catch { /* firma vacía */ }
         page.drawLine({ start: { x, y: y - 74 }, end: { x: x + w, y: y - 74 }, thickness: 0.6, color: C(GRIS) });
-        page.drawText(limpio(q), { x, y: y - 86, size: 8, font: F, color: C(GRIS) });
+        page.drawText(limpio(X(q)), { x, y: y - 86, size: 8, font: F, color: C(GRIS) });
       }
       y -= 100;
     }
@@ -314,7 +329,7 @@ export async function generarInforme({ m, g, inst, usuario, getFoto, lang = 'es'
   // ---------- Pie y numeración ----------
   const pages = pdf.getPages();
   pages.forEach((p, i) => {
-    const pie = limpio('OSMOS Sistemas Eléctricos · www.osmos.es · Departamento Técnico');
+    const pie = limpio(`OSMOS Sistemas Eléctricos · www.osmos.es · ${EN ? 'Technical Department' : 'Departamento Técnico'}`);
     p.drawLine({ start: { x: M, y: M + 14 }, end: { x: W - M, y: M + 14 }, thickness: 0.5, color: rgb(0.8, 0.82, 0.85) });
     p.drawText(pie, { x: M, y: M, size: 7.5, font: F, color: C(GRIS) });
     const num = `${T('Página')} ${i + 1} ${T('de')} ${pages.length}`;
@@ -330,29 +345,31 @@ export function nombreInforme(m, g, inst) {
   return `OSMOS_Mant_${s(inst.nombre)}_${s(m.ubicacion)}_${g.tipo}_${(m.fecha || '').slice(0, 10)}.pdf`;
 }
 
-// Datos del informe en CSV (para Excel)
-export function csvInforme(m, g) {
+// Datos del informe en CSV (para Excel). Con lang 'en' y el diccionario, sale en inglés.
+export function csvInforme(m, g, lang = 'es', DIC = {}) {
+  const EN = lang === 'en';
+  const X = v => (EN && DIC[v] != null) ? DIC[v] : v;
   const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-  const out = [['Fase', 'Instancia', 'Paso', 'Tipo', 'Campo', 'Valor', 'Unidad'].map(q).join(';')];
+  const out = [(EN ? ['Phase', 'Item', 'Step', 'Type', 'Field', 'Value', 'Unit'] : ['Fase', 'Instancia', 'Paso', 'Tipo', 'Campo', 'Valor', 'Unidad']).map(q).join(';')];
   g.fases.forEach(f => {
     const insts = f.repetir ? instanciasDe(m, f) : [null];
     insts.forEach(ins => f.pasos.forEach(p => {
       const r = m.resp[clave(p, ins?.id || null)];
       if (!r) return;
-      const base = [f.n + ' ' + f.titulo, ins?.nombre || '', p.texto];
-      if (r.na) { out.push([...base, 'NA', '', 'No procede', ''].map(q).join(';')); return; }
+      const base = [f.n + ' ' + X(f.titulo), ins?.nombre || '', X(p.texto)];
+      if (r.na) { out.push([...base, 'NA', '', EN ? 'N/A' : 'No procede', ''].map(q).join(';')); return; }
       p.campos.forEach((c, ci) => {
         if (c.t === 'CINA' && r.cina?.[ci]) out.push([...base, 'CINA', '', r.cina[ci], ''].map(q).join(';'));
         if (c.t === 'OKKO' && r.okko?.[ci]) out.push([...base, 'OK/KO', '', r.okko[ci], ''].map(q).join(';'));
-        if (c.t === 'SEL' && r.sel?.[ci]) out.push([...base, 'SEL', c.label || '', [].concat(r.sel[ci]).join(', '), ''].map(q).join(';'));
+        if (c.t === 'SEL' && r.sel?.[ci]) out.push([...base, 'SEL', X(c.label || ''), [].concat(r.sel[ci]).map(X).join(', '), ''].map(q).join(';'));
         if (c.t === 'TXT' && r.txt?.[ci]) out.push([...base, 'TXT', '', r.txt[ci], ''].map(q).join(';'));
         if (c.t === 'MED') (r.med?.[ci] || []).forEach((fila, fi) => c.campos.forEach((cc, k) =>
-          out.push([...base, 'MED', cc.label + (r.med[ci].length > 1 ? ' #' + (fi + 1) : ''), fila[k], cc.unidad].map(q).join(';'))));
+          out.push([...base, 'MED', X(cc.label) + (r.med[ci].length > 1 ? ' #' + (fi + 1) : ''), fila[k], cc.unidad].map(q).join(';'))));
       });
     }));
   });
   out.push('');
-  out.push(['Código', 'Gravedad', 'Ubicación', 'Defecto', 'Descripción', 'Propuesta', 'Estado', 'ID GnO'].map(q).join(';'));
-  m.defectos.forEach(d => out.push([d.codigo, d.gravedad, d.ubic, d.texto, d.desc, d.propuesta, d.estado, d.gno].map(q).join(';')));
-  return '﻿' + out.join('\r\n');
+  out.push((EN ? ['Code', 'Class', 'Location', 'Defect', 'Description', 'Proposal', 'Status', 'GnO ID'] : ['Código', 'Gravedad', 'Ubicación', 'Defecto', 'Descripción', 'Propuesta', 'Estado', 'ID GnO']).map(q).join(';'));
+  m.defectos.forEach(d => out.push([d.codigo, d.gravedad, String(d.ubic || '').split(' · ').map(X).join(' · '), X(d.texto), d.desc, d.propuesta, X(d.estado), d.gno].map(q).join(';')));
+  return '\ufeff' + out.join('\r\n');
 }

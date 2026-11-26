@@ -26,7 +26,8 @@ export function criterioCampo(crit, campo, perfil) {
 const num = v => (v === '' || v == null) ? NaN : parseFloat(String(v).replace(',', '.'));
 
 // Devuelve [{ok, aviso, msg}] por campo de la fila, más evaluaciones calculadas.
-export function evaluarFila(paso, med, fila, crit, perfil) {
+export function evaluarFila(paso, med, fila, crit, perfil, lang = 'es') {
+  const EN = lang === 'en';
   const res = med.campos.map((c, i) => {
     const cr = criterioCampo(crit, c, perfil);
     const v = num(fila[i]);
@@ -46,7 +47,7 @@ export function evaluarFila(paso, med, fila, crit, perfil) {
     const nivel = dt < t.ok ? 'ok' : dt <= t.medio ? 'medio' : 'alto';
     extra.push({
       ok: nivel === 'ok',
-      msg: `ΔT = ${dt.toFixed(1)} °C → ${nivel === 'ok' ? 'correcto' : nivel === 'medio' ? (perfil === 'lelystad' ? 'clase C' : 'Leve') : (perfil === 'lelystad' ? 'clase B' : 'Grave')}`,
+      msg: `ΔT = ${dt.toFixed(1)} °C → ${nivel === 'ok' ? (EN ? 'correct' : 'correcto') : nivel === 'medio' ? (perfil === 'lelystad' ? (EN ? 'class C' : 'clase C') : 'Leve') : (perfil === 'lelystad' ? (EN ? 'class B' : 'clase B') : 'Grave')}`,
       gravedad: nivel === 'ok' ? null : nivel === 'medio' ? (perfil === 'lelystad' ? 'C' : 'Leve') : (perfil === 'lelystad' ? 'B' : 'Grave'),
     });
   }
@@ -57,7 +58,7 @@ export function evaluarFila(paso, med, fila, crit, perfil) {
     if (v.every(x => !isNaN(x))) {
       const m = (v[0] + v[1] + v[2]) / 3;
       const d = m > 0 ? Math.max(...v.map(x => Math.abs(x - m))) / m * 100 : 0;
-      extra.push({ ok: d <= crit.desequilibrio.max, msg: `Desequilibrio de fases: ${d.toFixed(1)} % (${crit.desequilibrio.txt})` });
+      extra.push({ ok: d <= crit.desequilibrio.max, msg: EN ? `Phase imbalance: ${d.toFixed(1)} % (≤ ${crit.desequilibrio.max} %; alert if any phase exceeds 80 % of the rating)` : `Desequilibrio de fases: ${d.toFixed(1)} % (${crit.desequilibrio.txt})` });
     }
   }
   return { campos: res, extra };
