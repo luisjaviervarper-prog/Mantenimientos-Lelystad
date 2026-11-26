@@ -1,0 +1,423 @@
+{
+ "sabon": {
+  "escala": [
+   "Muy grave",
+   "Grave",
+   "Leve"
+  ],
+  "descripcion": {
+   "Muy grave": "Riesgo inmediato para personas o instalación. Se deja sin servicio o se avisa en el momento al responsable del cliente.",
+   "Grave": "Puede provocar fallo o accidente; corregir en plazo corto (orientativo ≤ 1 mes).",
+   "Leve": "No afecta a la seguridad inmediata; corregir en el siguiente mantenimiento."
+  },
+  "catalogo": [
+   {
+    "codigo": "MT-01",
+    "texto": "Falta unifilar, cartel de 5 reglas o primeros auxilios en el CT",
+    "guion": "MT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "MT-02",
+    "texto": "Material de seguridad ausente o caducado (guantes, banqueta, pértiga, extintor)",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-03",
+    "texto": "Puerta, cerradura o rejilla del CT dañada; acceso no restringido",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-04",
+    "texto": "Humedades, filtraciones o suciedad importante en la sala",
+    "guion": "MT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "MT-05",
+    "texto": "Manómetro SF6 fuera de zona verde",
+    "guion": "MT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "MT-06",
+    "texto": "Indicador de presencia de tensión o detector de paso de falta averiado",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-07",
+    "texto": "Enclavamiento que no actúa",
+    "guion": "MT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "MT-08",
+    "texto": "Mecanismo de maniobra duro o bobina que no actúa",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-09",
+    "texto": "Calibre de fusible distinto al del proyecto o percutor actuado",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-10",
+    "texto": "Aislamiento del trafo por debajo del criterio o descenso brusco",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-11",
+    "texto": "Fuga de aceite, nivel bajo o silicagel saturado",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-12",
+    "texto": "Protección térmica del trafo (PT100, Buchholz, DGPT2) no dispara",
+    "guion": "MT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "MT-13",
+    "texto": "Resistencia de tierra por encima del criterio",
+    "guion": "MT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "MT-14",
+    "texto": "Terminal MT con marcas de descarga o calentamiento",
+    "guion": "MT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "BT-01",
+    "texto": "Cuadro sin rotular o salidas sin identificar",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-02",
+    "texto": "Falta unifilar o no coincide con el cuadro",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-03",
+    "texto": "Falta etiqueta de riesgo eléctrico",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-04",
+    "texto": "Partes activas accesibles (faltan tapas o cubrebornas)",
+    "guion": "BT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "BT-05",
+    "texto": "Punto caliente en termografía",
+    "guion": "BT",
+    "gravedad": "Según ΔT (tabla de criterios)"
+   },
+   {
+    "codigo": "BT-06",
+    "texto": "Diferencial que no dispara o fuera de tiempo",
+    "guion": "BT",
+    "gravedad": "Muy grave"
+   },
+   {
+    "codigo": "BT-07",
+    "texto": "Aislamiento de línea < 0,5 MΩ",
+    "guion": "BT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "BT-08",
+    "texto": "Protección con calibre o ajuste distinto al unifilar",
+    "guion": "BT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "BT-09",
+    "texto": "Envolvente o puerta sin puesta a tierra",
+    "guion": "BT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "BT-10",
+    "texto": "Desequilibrio de fases o carga cercana al calibre",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-11",
+    "texto": "Cuadro con obstáculos delante o sin llave",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-12",
+    "texto": "Toma de corriente rota o sin tierra",
+    "guion": "BT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "BT-13",
+    "texto": "Luminaria de alumbrado general fundida o dañada",
+    "guion": "BT",
+    "gravedad": "Leve"
+   },
+   {
+    "codigo": "BT-14",
+    "texto": "Emergencia que no enciende o autonomía < 1 h",
+    "guion": "BT",
+    "gravedad": "Grave"
+   },
+   {
+    "codigo": "BT-15",
+    "texto": "Señalización de evacuación ilegible o mal orientada",
+    "guion": "BT",
+    "gravedad": "Leve"
+   }
+  ]
+ },
+ "lelystad": {
+  "escala": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ],
+  "descripcion": {
+   "A": "Peligro para la vida y/o incendio · Plazo: Inmediato · Equivale a Muy grave",
+   "B": "Riesgo alto · Plazo: Corto plazo · Equivale a Grave",
+   "C": "Riesgo medio · Plazo: Plazo previsible · Equivale a Leve",
+   "D": "Riesgo bajo / observación · Plazo: Plazo más largo · Equivale a Leve"
+  },
+  "catalogo": [
+   {
+    "codigo": "BT-01",
+    "texto": "Cuadro sin identificar o mal identificado",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "90"
+   },
+   {
+    "codigo": "BT-02",
+    "texto": "Impedancia de bucle medida a 15 mA por disparos aguas arriba",
+    "guion": "BT",
+    "gravedad": "D",
+    "casosGnO": "76"
+   },
+   {
+    "codigo": "BT-03",
+    "texto": "Código de colores de conductores incorrecto",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "52"
+   },
+   {
+    "codigo": "BT-04",
+    "texto": "Entrada del cable de alimentación incorrecta; no cumple IP",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "50"
+   },
+   {
+    "codigo": "BT-05",
+    "texto": "Entradas de cable de reserva sin tapar",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "14"
+   },
+   {
+    "codigo": "BT-06",
+    "texto": "Puntas de cable sueltas o sin rematar",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "14 + 7"
+   },
+   {
+    "codigo": "BT-07",
+    "texto": "Conductores flexibles sin puntera",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "11"
+   },
+   {
+    "codigo": "BT-08",
+    "texto": "Verde-amarillo usado con otra función",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "10"
+   },
+   {
+    "codigo": "BT-09",
+    "texto": "Terminal con agujero de diámetro incorrecto",
+    "guion": "BT",
+    "gravedad": "D",
+    "casosGnO": "9"
+   },
+   {
+    "codigo": "BT-10",
+    "texto": "Esquema no actualizado o corregido a mano",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "14"
+   },
+   {
+    "codigo": "BT-11",
+    "texto": "Cuadro sucio o desordenado",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "7"
+   },
+   {
+    "codigo": "BT-12",
+    "texto": "Varios cables por prensaestopas o varios conductores por borne",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "8"
+   },
+   {
+    "codigo": "BT-13",
+    "texto": "Aberturas en la envolvente (< IP2X / IPXXB)",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "3"
+   },
+   {
+    "codigo": "BT-14",
+    "texto": "Falta de selectividad con la protección aguas arriba",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "4"
+   },
+   {
+    "codigo": "BT-15",
+    "texto": "Circuitos finales o componentes sin identificar",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "7"
+   },
+   {
+    "codigo": "BT-16",
+    "texto": "Diferencial que no dispara en tiempo o botón de test averiado",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "9"
+   },
+   {
+    "codigo": "BT-17",
+    "texto": "Impedancia de bucle demasiado alta",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "5"
+   },
+   {
+    "codigo": "BT-18",
+    "texto": "Aislamiento bajo en circuito final",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "1"
+   },
+   {
+    "codigo": "BT-19",
+    "texto": "Tensión N–PE > 12 V",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "1"
+   },
+   {
+    "codigo": "BT-20",
+    "texto": "Conector o magnetotérmico averiado",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "2"
+   },
+   {
+    "codigo": "BT-21",
+    "texto": "Emergencia que no enciende o autonomía < 60 min",
+    "guion": "BT",
+    "gravedad": "B",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "BT-22",
+    "texto": "Pictograma de evacuación ilegible o mal orientado",
+    "guion": "BT",
+    "gravedad": "C",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-01",
+    "texto": "Falta unifilar o señalización en la TS",
+    "guion": "MT",
+    "gravedad": "C",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-02",
+    "texto": "Manómetro SF6 fuera de zona verde",
+    "guion": "MT",
+    "gravedad": "A",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-03",
+    "texto": "Enclavamiento que no actúa",
+    "guion": "MT",
+    "gravedad": "A",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-04",
+    "texto": "Motor o engranaje del mando de celda averiado",
+    "guion": "MT",
+    "gravedad": "B",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-05",
+    "texto": "Aislamiento del trafo bajo o con descenso brusco",
+    "guion": "MT",
+    "gravedad": "B",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-06",
+    "texto": "Protección térmica del trafo no dispara",
+    "guion": "MT",
+    "gravedad": "A",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-07",
+    "texto": "Terminal MT con descargas o calentamiento",
+    "guion": "MT",
+    "gravedad": "A",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-08",
+    "texto": "Ajustes del CGBT Okken distintos al plano",
+    "guion": "MT",
+    "gravedad": "B",
+    "casosGnO": "—"
+   },
+   {
+    "codigo": "MT-09",
+    "texto": "Humedades o suciedad en la sala",
+    "guion": "MT",
+    "gravedad": "C",
+    "casosGnO": "—"
+   }
+  ]
+ }
+}

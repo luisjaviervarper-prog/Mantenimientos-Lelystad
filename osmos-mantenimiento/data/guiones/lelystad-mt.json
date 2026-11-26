@@ -1,0 +1,741 @@
+{
+ "id": "lelystad-mt",
+ "tipo": "MT",
+ "titulo": "Mantenimiento MT de las estaciones (TS) de Lelystad",
+ "intro": "Sigue los tres bloques del planning MT de Lelystad: limpieza de sala sin corte (2 personas, unas 4 h por centro), transformadores con corte (3 personas, unas 3 h por trafo) y celdas con corte (3 personas). En el Centro de Entrega no hay trafo: solo sala y celdas.",
+ "fases": [
+  {
+   "n": 0,
+   "titulo": "Preparación",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F0.1",
+     "texto": "Abrir OT y seleccionar la estación. La app carga el número de trafos y celdas, el unifilar y los defectos abiertos (incluidos los de Bureau Veritas).",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.2",
+     "texto": "Registrar IV y WV del trabajo y comprobar que todo el equipo tiene designación VP para MT vigente.",
+     "campos": [
+      {
+       "t": "SEL",
+       "fuente": "equipos",
+       "multi": true
+      },
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F0.3",
+     "texto": "Acordar el corte con GXO: zona afectada, hora y si la carga pasa a otra TS o al grupo de la Central de Emergencia.",
+     "campos": [
+      {
+       "t": "TXT"
+      }
+     ]
+    },
+    {
+     "id": "F0.4",
+     "texto": "Equipos de medida y su calibración (medidor de aislamiento MT, telurómetro, detector de tensión MT, cámara termográfica).",
+     "campos": [
+      {
+       "t": "SEL",
+       "fuente": "equipos",
+       "multi": true
+      }
+     ]
+    },
+    {
+     "id": "F0.5",
+     "texto": "EPIs y material MT (guantes MT, pantalla, ropa ignífuga, equipos de puesta a tierra portátiles, candados y tarjetas).",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 1,
+   "titulo": "Llegada",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F1.1",
+     "texto": "Foto del acceso y de la rotulación exterior de la TS.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.2",
+     "texto": "Foto de la sala antes de entrar.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F1.3",
+     "texto": "LMRA en la app, firmada por el equipo.",
+     "campos": [
+      {
+       "t": "LMRA"
+      },
+      {
+       "t": "FIRMA",
+       "quien": [
+        "Equipo de trabajo"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F1.4",
+     "texto": "Foto del unifilar en la sala; si falta o no coincide, marcar I.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F1.5",
+     "texto": "Material de seguridad y señalización de la sala (pictogramas, instrucciones de maniobra, extintor).",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "titulo": "Bloque sin corte: sala y celdas en tensión",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F2.1",
+     "texto": "Termografía de celdas, bornas del trafo y salida al CGBT Okken.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1,
+       "termica": true
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura máxima",
+         "unidad": "°C",
+         "tipo": "num"
+        },
+        {
+         "label": "Temperatura de referencia",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.2",
+     "texto": "Lectura de manómetros SF6, indicadores de tensión, detectores de paso de falta y relés.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por celda"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F2.3",
+     "texto": "Foto de los contadores de maniobras.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Nº de maniobras",
+         "unidad": "nº",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.4",
+     "texto": "Temperatura del trafo en la centralita.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F2.5",
+     "texto": "Limpieza general de la sala, exterior de cabinas y suelo técnico.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "después"
+      }
+     ]
+    },
+    {
+     "id": "F2.6",
+     "texto": "Edificio: puertas, ventilación, humedades, alumbrado de la sala.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "titulo": "Corte de tensión (5 reglas de oro)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F3.1",
+     "texto": "Confirmar autorización de GXO y registrar hora de inicio.",
+     "campos": [
+      {
+       "t": "SINO"
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Hora",
+         "unidad": "",
+         "tipo": "hora"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F3.2",
+     "texto": "Desconectar y abrir con corte visible.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.3",
+     "texto": "Bloquear con candado y tarjeta.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.4",
+     "texto": "Verificar ausencia de tensión (detector probado antes y después).",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.5",
+     "texto": "Poner a tierra y en cortocircuito.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F3.6",
+     "texto": "Delimitar y señalizar la zona.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "titulo": "Bloque con corte: celdas (repetir por celda)",
+   "repetir": "celda",
+   "pasos": [
+    {
+     "id": "F4.1",
+     "texto": "Seleccionar celda (nº y función).",
+     "campos": [
+      {
+       "t": "SEL",
+       "label": "Función de la celda",
+       "opciones": [
+        "Línea",
+        "Protección",
+        "Interruptor",
+        "Medida",
+        "Remonte",
+        "Otra"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F4.2",
+     "texto": "Foto antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F4.3",
+     "texto": "Limpieza interna de la celda.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F4.4",
+     "texto": "Reapriete de conexiones, mecanismos, engrase, enclavamientos y bobinas.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por punto"
+      }
+     ]
+    },
+    {
+     "id": "F4.5",
+     "texto": "Si el motor o el engranaje del mando no funciona, registrarlo como defecto. Hay kit de repuesto en el presupuesto de repuestos MT.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    },
+    {
+     "id": "F4.6",
+     "texto": "Fusibles y ajustes del relé (foto de la pantalla de ajustes).",
+     "campos": [
+      {
+       "t": "SEL",
+       "label": "Calibre de fusibles / ajustes del relé",
+       "libre": true,
+       "opciones": []
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F4.7",
+     "texto": "Foto después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "titulo": "Bloque con corte: transformadores (repetir por trafo)",
+   "repetir": "trafo",
+   "pasos": [
+    {
+     "id": "F5.1",
+     "texto": "Foto de la placa de características.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F5.2",
+     "texto": "Foto antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F5.3",
+     "texto": "Limpieza de la sala del trafo y del transformador.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.4",
+     "texto": "Reapriete de bornas AT y BT; posición del regulador de tomas.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F5.5",
+     "texto": "Protecciones térmicas (PT100/centralita) y ventilación: prueba de alarma y disparo.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F5.6",
+     "texto": "Aislamiento AT–BT, AT–T y BT–T a 1 min, con temperatura ambiente.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "AT–BT",
+         "unidad": "GΩ",
+         "tipo": "num"
+        },
+        {
+         "label": "AT–Tierra",
+         "unidad": "GΩ",
+         "tipo": "num"
+        },
+        {
+         "label": "BT–Tierra",
+         "unidad": "GΩ",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Temperatura ambiente",
+         "unidad": "°C",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "de la pantalla"
+      }
+     ]
+    },
+    {
+     "id": "F5.7",
+     "texto": "Foto después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "titulo": "Tierras y cables MT",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F6.1",
+     "texto": "Tierras de la estación.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Resistencia",
+         "unidad": "Ω",
+         "tipo": "num"
+        }
+       ]
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del telurómetro"
+      }
+     ]
+    },
+    {
+     "id": "F6.2",
+     "texto": "Terminales y conectores MT sin marcas de descarga o calentamiento.",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "titulo": "CGBT Okken asociado (con el mismo corte)",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F7.1",
+     "texto": "Foto del CGBT antes.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F7.2",
+     "texto": "Limpieza por columnas.",
+     "campos": [
+      {
+       "t": "CINA",
+       "nota": "por columna"
+      }
+     ]
+    },
+    {
+     "id": "F7.3",
+     "texto": "Reapriete del interruptor general y de las salidas principales.",
+     "campos": [
+      {
+       "t": "CINA"
+      }
+     ]
+    },
+    {
+     "id": "F7.4",
+     "texto": "Ajustes del interruptor general frente al plano Okken (nº de plano y revisión).",
+     "campos": [
+      {
+       "t": "CINA"
+      },
+      {
+       "t": "FOTO",
+       "n": 1,
+       "nota": "del disparador"
+      }
+     ]
+    },
+    {
+     "id": "F7.5",
+     "texto": "Foto después.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "titulo": "Reposición",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F8.1",
+     "texto": "Retirar tierras portátiles, candados y señalización.",
+     "campos": [
+      {
+       "t": "SINO"
+      }
+     ]
+    },
+    {
+     "id": "F8.2",
+     "texto": "Maniobras de reposición y comprobación de tensión en BT.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Tensión",
+         "unidad": "V",
+         "tipo": "num"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "F8.3",
+     "texto": "Avisar a GXO y registrar hora de fin del corte.",
+     "campos": [
+      {
+       "t": "MED",
+       "campos": [
+        {
+         "label": "Hora",
+         "unidad": "",
+         "tipo": "hora"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "titulo": "Cierre",
+   "repetir": null,
+   "pasos": [
+    {
+     "id": "F9.1",
+     "texto": "Foto final de la sala.",
+     "campos": [
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F9.2",
+     "texto": "Material y repuestos usados (lista y foto).",
+     "campos": [
+      {
+       "t": "TXT"
+      },
+      {
+       "t": "FOTO",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "id": "F9.3",
+     "texto": "Defectos con clase A/B/C/D, foto y propuesta.",
+     "campos": [
+      {
+       "t": "DEFECTOS"
+      }
+     ]
+    },
+    {
+     "id": "F9.4",
+     "texto": "Resultado global y firma del WV.",
+     "campos": [
+      {
+       "t": "SEL",
+       "rol": "resultado",
+       "opciones": [
+        "FAVORABLE",
+        "CONDICIONADO",
+        "DESFAVORABLE"
+       ]
+      },
+      {
+       "t": "FIRMA",
+       "quien": [
+        "WV (responsable del trabajo)"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reglas": [
+  "NEN 1010: diseño y verificación de instalaciones BT (equivale al REBT).",
+  "NEN 3140: trabajo seguro en BT e inspección periódica (GnO ha fijado 1 vez cada 4 años).",
+  "NEN 3840 / NEN-EN 50110: trabajo seguro en MT.",
+  "NEN-EN 1838 y NEN-EN 50172: alumbrado de emergencia.",
+  "Solo interviene personal designado por escrito según NEN 3140 / NEN 3840: VP (vakbekwaam persoon) para trabajos y maniobras; VOP (voldoende onderricht persoon) solo como ayudante. La app guarda la designación y su caducidad.",
+  "Cada trabajo tiene un responsable de la instalación (IV, installatieverantwoordelijke) y un responsable del trabajo (WV, werkverantwoordelijke). Ambos se registran en la OT.",
+  "Antes de empezar, LMRA (Last Minute Risk Analysis) en la propia app: lista de comprobación firmada por el equipo.",
+  "Los cortes se coordinan con GXO por zonas y se registran con su autorización (werkvergunning si la piden).",
+  "Fotos antes y después, unifilar, 5 reglas de oro, material y firma: igual que en Sabón.",
+  "Idioma: la app debe poder mostrar los pasos en castellano e inglés y generar el informe en inglés si lo pide el cliente o el inspector."
+ ]
+}

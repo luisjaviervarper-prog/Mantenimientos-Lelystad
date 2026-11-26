@@ -1,0 +1,294 @@
+{
+ "comun": {
+  "dif_ms": {
+   "max": 300,
+   "txt": "≤ 300 ms a IΔn (EN 61008/61009)"
+  },
+  "dif_ma": {
+   "min": 15,
+   "max": 30,
+   "txt": "Entre 0,5 y 1 × IΔn (15–30 mA para 30 mA)"
+  },
+  "cont": {
+   "max": 2,
+   "txt": "< 2 Ω"
+  },
+  "autonomia": {
+   "min": 60,
+   "txt": "≥ 60 min"
+  },
+  "cont_toma": {
+   "max": 2,
+   "txt": "< 2 Ω"
+  }
+ },
+ "sabon": {
+  "aisl_bt": {
+   "min": 0.5,
+   "txt": "≥ 0,5 MΩ a 500 V c.c. (ITC-BT-19)"
+  },
+  "tierra_neutro": {
+   "max": 37,
+   "txt": "≤ 37 Ω (ITC-RAT 13)"
+  },
+  "tierra_herrajes": {
+   "max": 20,
+   "txt": "Valor del proyecto; orientativo ≤ 20 Ω (ITC-RAT 13)",
+   "aviso": true
+  }
+ },
+ "lelystad": {
+  "aisl_bt": {
+   "min": 1,
+   "txt": "≥ 1 MΩ a 500 V c.c. (NEN 1010, cap. 6)"
+  },
+  "nfpe": {
+   "max": 12,
+   "txt": "≤ 12 V (informes GnO)"
+  }
+ },
+ "termografia": {
+  "ok": 10,
+  "medio": 30,
+  "txt": "ΔT < 10 °C correcto; 10–30 °C leve (clase C); > 30 °C grave (clase B)"
+ },
+ "desequilibrio": {
+  "max": 20,
+  "txt": "≤ 20 %; alerta si alguna fase supera el 80 % del calibre"
+ },
+ "tabla_sabon": [
+  [
+   "Medida",
+   "Guion",
+   "Unidad",
+   "Criterio de aceptación",
+   "Referencia"
+  ],
+  [
+   "Aislamiento trafo AT–BT, AT–T, BT–T",
+   "MT",
+   "GΩ",
+   "> 1.000 Ω/V de tensión nominal; alerta si baja > 50 % respecto al año anterior a igual temperatura",
+   "Criterio de los informes Osmos"
+  ],
+  [
+   "Tierra de herrajes (protección)",
+   "MT",
+   "Ω",
+   "Valor del proyecto del CT; orientativo ≤ 20 Ω",
+   "RD 337/2014, ITC-RAT 13"
+  ],
+  [
+   "Tierra de neutro (servicio)",
+   "MT",
+   "Ω",
+   "≤ 37 Ω",
+   "ITC-RAT 13"
+  ],
+  [
+   "Tensiones de paso y contacto",
+   "MT",
+   "V",
+   "≤ valores admisibles del proyecto (cada 3 años)",
+   "ITC-RAT 13"
+  ],
+  [
+   "Temperatura trafo seco / aceite",
+   "MT",
+   "°C",
+   "Por debajo del umbral de alarma del PT100 o termómetro",
+   "Placa del fabricante"
+  ],
+  [
+   "Termografía (conexiones)",
+   "MT y BT",
+   "°C",
+   "ΔT < 10 °C sobre referencia: C; 10–30 °C: Leve; > 30 °C: Grave",
+   "Criterio habitual de termografía"
+  ],
+  [
+   "Manómetro SF6",
+   "MT",
+   "—",
+   "Aguja en zona verde",
+   "Fabricante de la celda"
+  ],
+  [
+   "Aislamiento líneas BT",
+   "BT",
+   "MΩ",
+   "≥ 0,5 MΩ a 500 V c.c.",
+   "ITC-BT-19"
+  ],
+  [
+   "Diferencial 30 mA, tiempo a IΔn",
+   "BT",
+   "ms",
+   "≤ 300 ms",
+   "UNE-EN 61008/61009"
+  ],
+  [
+   "Diferencial 30 mA, tiempo a 5·IΔn",
+   "BT",
+   "ms",
+   "≤ 40 ms",
+   "UNE-EN 61008/61009"
+  ],
+  [
+   "Diferencial, corriente de disparo",
+   "BT",
+   "mA",
+   "Entre 0,5 y 1 × IΔn",
+   "UNE-EN 61008/61009"
+  ],
+  [
+   "Desequilibrio de fases",
+   "BT",
+   "%",
+   "≤ 20 %; alerta si algún valor supera el 80 % del calibre",
+   "Criterio Osmos"
+  ],
+  [
+   "Continuidad conductor de protección",
+   "BT",
+   "Ω",
+   "< 2 Ω",
+   "Criterio habitual"
+  ],
+  [
+   "Tensión de contacto",
+   "BT",
+   "V",
+   "≤ 50 V (locales secos), ≤ 24 V (húmedos)",
+   "ITC-BT-24"
+  ],
+  [
+   "Tierra del edificio",
+   "BT",
+   "Ω",
+   "Que garantice tensión de contacto ≤ 24/50 V con el diferencial instalado",
+   "ITC-BT-18"
+  ],
+  [
+   "Autonomía emergencias",
+   "BT",
+   "min",
+   "≥ 60 min",
+   "ITC-BT-28"
+  ]
+ ],
+ "tabla_lelystad": [
+  [
+   "Medida",
+   "Guion",
+   "Unidad",
+   "Criterio de aceptación",
+   "Referencia"
+  ],
+  [
+   "Aislamiento trafo AT–BT, AT–T, BT–T",
+   "MT",
+   "GΩ",
+   "> 1.000 Ω/V; alerta si baja > 50 % respecto a la medida anterior a igual temperatura",
+   "Criterio Osmos"
+  ],
+  [
+   "Tierras de la estación",
+   "MT",
+   "Ω",
+   "Valor del proyecto de la TS",
+   "Proyecto / Bureau Veritas"
+  ],
+  [
+   "Manómetro SF6",
+   "MT",
+   "—",
+   "Zona verde",
+   "Fabricante"
+  ],
+  [
+   "Termografía",
+   "MT y BT",
+   "°C",
+   "ΔT < 10 °C: correcto; 10–30 °C: clase C; > 30 °C: clase B",
+   "Criterio habitual"
+  ],
+  [
+   "Aislamiento líneas BT ≤ 500 V",
+   "BT",
+   "MΩ",
+   "≥ 1 MΩ a 500 V c.c.",
+   "NEN 1010, cap. 6"
+  ],
+  [
+   "Aislamiento circuitos MBTS/MBTP",
+   "BT",
+   "MΩ",
+   "≥ 0,5 MΩ a 250 V c.c.",
+   "NEN 1010, cap. 6"
+  ],
+  [
+   "Diferencial 30 mA a IΔn",
+   "BT",
+   "ms",
+   "≤ 300 ms",
+   "NEN-EN 61008/61009"
+  ],
+  [
+   "Diferencial 30 mA a 5·IΔn",
+   "BT",
+   "ms",
+   "≤ 40 ms",
+   "NEN-EN 61008/61009"
+  ],
+  [
+   "Impedancia de bucle Zs",
+   "BT",
+   "Ω",
+   "Zs · Ia ≤ U0 (desconexión ≤ 0,4 s en circuitos finales ≤ 32 A; ≤ 5 s en distribución)",
+   "NEN 1010, 411"
+  ],
+  [
+   "Tensión neutro–protección",
+   "BT",
+   "V",
+   "≤ 12 V (GnO la constata como defecto por encima)",
+   "Informes GnO"
+  ],
+  [
+   "Continuidad conductor de protección",
+   "BT",
+   "Ω",
+   "< 2 Ω",
+   "Criterio habitual"
+  ],
+  [
+   "Grado de protección de la envolvente",
+   "BT",
+   "—",
+   "Mínimo IP2X / IPXXB",
+   "NEN 1010"
+  ],
+  [
+   "Emergencias: ensayo de funcionamiento",
+   "BT",
+   "—",
+   "Mensual (OK/KO)",
+   "NEN-EN 50172"
+  ],
+  [
+   "Emergencias: autonomía",
+   "BT",
+   "min",
+   "≥ 60 min, ensayo anual",
+   "NEN-EN 1838 / 50172"
+  ],
+  [
+   "Inspección periódica BT completa",
+   "BT",
+   "años",
+   "1 vez cada 4 años (próxima Box 3: 4-5-2030)",
+   "NEN 3140 / GnO"
+  ]
+ ]
+}
